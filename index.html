@@ -3,266 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>📋 本週工作待辦事項</title>
+    <title>📋 樂點創意工作團隊待辦總表</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #6366f1; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6; }
+        :root {
+            --elly-color: #3b82f6;
+            --churong-color: #10b981;
+            --joann-color: #8b5cf6;
+            --urgent-color: #ef4444;
+            --warning-color: #f59e0b;
+        }
         body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); min-height: 100vh; color: #fff; }
-        .header { background: linear-gradient(90deg, #6366f1, #8b5cf6); padding: 20px; text-align: center; border-radius: 0 0 20px 20px; }
-        .day-card { background: rgba(255,255,255,0.08); border-radius: 16px; margin-bottom: 20px; overflow: hidden; }
-        .day-header { padding: 15px 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
-        .day-monday { background: linear-gradient(90deg, #3b82f6, #1d4ed8); }
-        .day-tuesday { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
-        .day-wednesday { background: linear-gradient(90deg, #f59e0b, #d97706); }
-        .day-thursday { background: linear-gradient(90deg, #10b981, #059669); }
-        .day-friday { background: linear-gradient(90deg, #ef4444, #dc2626); }
-        .task-list { padding: 15px; }
-        .task-item { display: flex; align-items: flex-start; padding: 12px; margin: 8px 0; background: rgba(255,255,255,0.05); border-radius: 10px; transition: all 0.3s; }
-        .task-item:hover { background: rgba(255,255,255,0.1); transform: translateX(5px); }
-        .task-time { min-width: 60px; font-weight: bold; color: #f59e0b; font-size: 0.9rem; }
-        .task-content { flex: 1; }
-        .task-title { font-weight: 600; margin-bottom: 5px; }
-        .task-detail { font-size: 0.85rem; opacity: 0.7; }
-        .task-tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; margin-right: 5px; }
-        .tag-recurring { background: rgba(139, 92, 246, 0.3); color: #a78bfa; }
-        .tag-urgent { background: rgba(239, 68, 68, 0.3); color: #fca5a5; }
-        .tag-client { background: rgba(59, 130, 246, 0.3); color: #93c5fd; }
-        .summary-card { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
-        .summary-stat { text-align: center; padding: 15px; }
-        .summary-number { font-size: 2rem; font-weight: bold; }
+        .header { background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 20px; text-align: center; border-radius: 0 0 20px 20px; }
+        .person-tabs { display: flex; justify-content: center; gap: 15px; padding: 20px; flex-wrap: wrap; }
+        .person-tab { padding: 12px 24px; border-radius: 25px; border: none; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
+        .person-tab.elly { background: rgba(59, 130, 246, 0.3); color: #60a5fa; }
+        .person-tab.elly.active { background: var(--elly-color); color: #fff; }
+        .person-tab.churong { background: rgba(16, 185, 129, 0.3); color: #34d399; }
+        .person-tab.churong.active { background: var(--churong-color); color: #fff; }
+        .person-tab.joann { background: rgba(139, 92, 246, 0.3); color: #a78bfa; }
+        .person-tab.joann.active { background: var(--joann-color); color: #fff; }
         .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .task-card { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 15px; margin-bottom: 15px; }
+        .task-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .task-date { font-size: 0.85rem; opacity: 0.7; }
+        .task-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 8px; }
+        .task-detail { font-size: 0.9rem; opacity: 0.8; }
+        .task-actions { display: flex; gap: 8px; }
+        .btn-action { padding: 5px 12px; border: none; border-radius: 8px; cursor: pointer; }
+        .btn-edit { background: rgba(59, 130, 246, 0.3); color: #60a5fa; }
+        .btn-delete { background: rgba(239, 68, 68, 0.3); color: #fca5a5; }
+        .btn-add { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .urgent-tag { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        .completed { opacity: 0.5; text-decoration: line-through; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; }
+        .modal.show { display: flex; align-items: center; justify-content: center; }
+        .modal-content { background: #1e293b; padding: 30px; border-radius: 16px; width: 90%; max-width: 500px; }
+        .form-control { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px; border-radius: 8px; width: 100%; margin-bottom: 15px; }
+        .form-control:focus { outline: none; border-color: #6366f1; }
+        .summary-stats { display: flex; justify-content: center; gap: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 16px; margin-bottom: 20px; }
+        .stat-item { text-align: center; }
+        .stat-number { font-size: 1.5rem; font-weight: bold; }
         .footer { text-align: center; padding: 20px; opacity: 0.5; font-size: 0.8rem; }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>📋 本週工作待辦事項</h1>
-        <p>2026年3月9日 - 3月13日</p>
+        <h1>📋 樂點創意工作團隊待辦總表</h1>
+        <p>2026年3月</p>
     </div>
+    
+    <div class="person-tabs">
+        <button class="person-tab elly active" onclick="showPerson('elly')">👩 Elly</button>
+        <button class="person-tab churong" onclick="showPerson('churong')">👨 楚融</button>
+        <button class="person-tab joann" onclick="showPerson('joann')">👩‍💼 Joann</button>
+    </div>
+    
     <div class="container">
-        <!-- 總覽 -->
-        <div class="row summary-card">
-            <div class="col-4 summary-stat">
-                <div class="summary-number" style="color: #3b82f6;">13</div>
-                <div>任務數</div>
-            </div>
-            <div class="col-4 summary-stat">
-                <div class="summary-number" style="color: #10b981;">8</div>
-                <div>定期任務</div>
-            </div>
-            <div class="col-4 summary-stat">
-                <div class="summary-number" style="color: #f59e0b;">5</div>
-                <div>客戶專案</div>
-            </div>
+        <div class="summary-stats">
+            <div class="stat-item"><div class="stat-number" style="color: #60a5fa;" id="elly-count">0</div><div>Elly 待辦</div></div>
+            <div class="stat-item"><div class="stat-number" style="color: #34d399;" id="churong-count">0</div><div>楚融 待辦</div></div>
+            <div class="stat-item"><div class="stat-number" style="color: #a78bfa;" id="joann-count">0</div><div>Joann 待辦</div></div>
         </div>
         
-        <!-- 週一 -->
-        <div class="day-card">
-            <div class="day-header day-monday">
-                <span>📅 週一 (3/9)</span>
-                <span>4 項任務</span>
-            </div>
-            <div class="task-list">
-                <div class="task-item">
-                    <div class="task-time">08:00</div>
-                    <div class="task-content">
-                        <div class="task-title">▲一上午：待辦如下</div>
-                        <span class="task-tag tag-recurring">每週重複</span>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">10:00</div>
-                    <div class="task-content">
-                        <div class="task-title">聿心發票：更正</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">11:00</div>
-                    <div class="task-content">
-                        <div class="task-title">每週追蹤專案進度</div>
-                        <div class="task-detail">待辦/活動前置/客戶聯繫</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">14:00</div>
-                    <div class="task-content">
-                        <div class="task-title">活動照片雲端：給客戶</div>
-                        <div class="task-detail">0303杰力 / 0304寵物 / 0306聯想</div>
-                    </div>
-                </div>
-            </div>
+        <!-- Elly 工作區 -->
+        <div id="elly-tasks" class="person-content">
+            <h3 style="color: #60a5fa; margin-bottom: 15px;">👩 Elly 的待辦事項</h3>
+            <!-- 任務會動態產生 -->
         </div>
         
-        <!-- 週二 -->
-        <div class="day-card">
-            <div class="day-header day-tuesday">
-                <span>📅 週二 (3/10)</span>
-                <span>2 項任務</span>
-            </div>
-            <div class="task-list">
-                <div class="task-item">
-                    <div class="task-time">08:00</div>
-                    <div class="task-content">
-                        <div class="task-title">▲二上午：待辦如下</div>
-                        <span class="task-tag tag-recurring">每週重複</span>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">17:00</div>
-                    <div class="task-content">
-                        <div class="task-title">2026科林集團家庭日</div>
-                        <div class="task-detail">初步企劃3/11提供 (活動/場地/餐點)</div>
-                        <span class="task-tag tag-client">新客戶</span>
-                    </div>
-                </div>
-            </div>
+        <!-- 楚融工作區 -->
+        <div id="churong-tasks" class="person-content" style="display:none;">
+            <h3 style="color: #34d399; margin-bottom: 15px;">👨 楚融 的待辦事項</h3>
+            <!-- 任務會動態產生 -->
         </div>
         
-        <!-- 週三 -->
-        <div class="day-card">
-            <div class="day-header day-wednesday">
-                <span>📅 週三 (3/11)</span>
-                <span>4 項任務</span>
-            </div>
-            <div class="task-list">
-                <div class="task-item">
-                    <div class="task-time">08:00</div>
-                    <div class="task-content">
-                        <div class="task-title">▲三上午：待辦如下</div>
-                        <span class="task-tag tag-recurring">每週重複</span>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">11:00</div>
-                    <div class="task-content">
-                        <div class="task-title">IG 影片</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">13:00</div>
-                    <div class="task-content">
-                        <div class="task-title">金牌特務企劃：更新</div>
-                        <div class="task-detail">任務類型 / 標配選配 / 報價單</div>
-                        <span class="task-tag tag-client">進行中</span>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">16:00</div>
-                    <div class="task-content">
-                        <div class="task-title">更新體能之巔提案：照片</div>
-                        <div class="task-detail">競賽 / 不NG</div>
-                    </div>
-                </div>
-            </div>
+        <!-- Joann 工作區 -->
+        <div id="joann-tasks" class="person-content" style="display:none;">
+            <h3 style="color: #a78bfa; margin-bottom: 15px;">👩‍💼 Joann 的待辦事項</h3>
+            <!-- 任務會動態產生 -->
         </div>
-        
-        <!-- 週四 -->
-        <div class="day-card">
-            <div class="day-header day-thursday">
-                <span>📅 週四 (3/12)</span>
-                <span>6 項任務</span>
-            </div>
-            <div class="task-list">
-                <div class="task-item">
-                    <div class="task-time">08:00</div>
-                    <div class="task-content">
-                        <div class="task-title">▲四上午：待辦如下</div>
-                        <span class="task-tag tag-recurring">每週重複</span>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">11:00</div>
-                    <div class="task-content">
-                        <div class="task-title">更新輸出：公版300秒知識問答</div>
-                        <div class="task-detail">公版：題目10套 (10x20cm)</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">14:00</div>
-                    <div class="task-content">
-                        <div class="task-title">樂點抽獎活動：楚融生日設計</div>
-                        <div class="task-detail">0320抽獎公告 / 0326中獎公告</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">15:00</div>
-                    <div class="task-content">
-                        <div class="task-title">金牌特務：道具整理確認</div>
-                        <div class="task-detail">負責人：楚融</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">16:00</div>
-                    <div class="task-content">
-                        <div class="task-title">確認上貨：楚融</div>
-                        <div class="task-detail">肺肺撞球板子</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 週五 -->
-        <div class="day-card">
-            <div class="day-header day-friday">
-                <span>📅 週五 (3/13)</span>
-                <span>3 項任務</span>
-            </div>
-            <div class="task-list">
-                <div class="task-item">
-                    <div class="task-time">08:00</div>
-                    <div class="task-content">
-                        <div class="task-title">▲五上午：活動執行</div>
-                        <span class="task-tag tag-recurring">每週重複</span>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">12:00</div>
-                    <div class="task-content">
-                        <div class="task-title">外場：博士倫</div>
-                        <span class="task-tag tag-client">客戶活動</span>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">12:30</div>
-                    <div class="task-content">
-                        <div class="task-title">▼五下午：活動執行</div>
-                        <span class="task-tag tag-recurring">每週重複</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- 下週預告 -->
-        <div class="day-card">
-            <div class="day-header" style="background: linear-gradient(90deg, #6b7280, #4b5563);">
-                <span>📆 下週預告 (3/16-20)</span>
-            </div>
-            <div class="task-list">
-                <div class="task-item">
-                    <div class="task-time">3/19</div>
-                    <div class="task-content">
-                        <div class="task-title">上貨：博士倫</div>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">3/25</div>
-                    <div class="task-content">
-                        <div class="task-title">光宸科技 - 金牌特務</div>
-                        <span class="task-tag tag-client">客戶活動</span>
-                    </div>
-                </div>
-                <div class="task-item">
-                    <div class="task-time">3/27</div>
-                    <div class="task-content">
-                        <div class="task-title">JCB - 福爾摩斯</div>
-                        <span class="task-tag tag-client">客戶活動</span>
-                    </div>
-                </div>
+    </div>
+    
+    <button class="btn-add" onclick="openModal()">+</button>
+    
+    <!-- 新增/編輯 Modal -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <h3 id="modalTitle" style="margin-bottom: 20px;">新增待辦</h3>
+            <input type="hidden" id="taskId">
+            <input type="hidden" id="taskPerson">
+            <select class="form-control" id="taskPersonSelect">
+                <option value="elly">👩 Elly</option>
+                <option value="churong">👨 楚融</option>
+                <option value="joann">👩‍💼 Joann</option>
+            </select>
+            <input type="text" class="form-control" id="taskTitle" placeholder="任務名稱">
+            <input type="text" class="form-control" id="taskDetail" placeholder="任務詳情（選填）">
+            <input type="date" class="form-control" id="taskDate">
+            <select class="form-control" id="taskPriority">
+                <option value="normal">一般</option>
+                <option value="urgent">⚡ 緊急</option>
+            </select>
+            <div style="display: flex; gap: 10px;">
+                <button class="btn-action btn-edit" style="flex:1; padding: 12px;" onclick="saveTask()">儲存</button>
+                <button class="btn-action" style="flex:1; padding: 12px; background: rgba(255,255,255,0.1);" onclick="closeModal()">取消</button>
             </div>
         </div>
     </div>
+    
     <div class="footer">
-        📋 樂點創意工作待辦事項 | 資料來源：Albert 提供 | 更新時間：2026/03/11
+        📋 樂點創意工作團隊 | 資料僅供參考 | 更新時間：2026/03/12
     </div>
+    
+    <script>
+        // 任務資料
+        let tasks = [
+            // Elly (藍底)
+            {id: 1, person: 'elly', title: '金牌特務企劃更新', detail: '任務類型 / 標配選配 / 報價單', date: '2026-03-11', priority: 'normal'},
+            {id: 2, person: 'elly', title: '每週追蹤專案進度', detail: '待辦/活動前置/客戶聯繫', date: '2026-03-09', priority: 'normal'},
+            {id: 3, person: 'elly', title: '案件進度追蹤', detail: 'mail/line/表單', date: '2026-03-09', priority: 'normal'},
+            
+            // Chu Rong (白底)
+            {id: 4, person: 'churong', title: '楚融生日抽獎設計', detail: '0320抽獎公告 / 0326中獎公告', date: '2026-03-12', priority: 'urgent'},
+            {id: 5, person: 'churong', title: '金牌特務道具整理確認', detail: '負責人：楚融', date: '2026-03-12', priority: 'urgent'},
+            {id: 6, person: 'churong', title: '確認上貨', detail: '肺肺撞球板子', date: '2026-03-12', priority: 'urgent'},
+            {id: 7, person: 'churong', title: '更新體能之巔提案照片', detail: '競賽 / 不NG', date: '2026-03-11', priority: 'normal'},
+            
+            // Joann (黑底)
+            {id: 8, person: 'joann', title: '顯葳股份：大富翁報價、場地', detail: '', date: '2026-03-09', priority: 'urgent'},
+            {id: 9, person: 'joann', title: 'TSMC 徐文馨秘書 Fiona：報價單', detail: '', date: '2026-03-09', priority: 'urgent'},
+            {id: 10, person: 'joann', title: 'TSMC IT PLED 謝秘書：破風報價單', detail: '', date: '2026-03-09', priority: 'urgent'},
+            {id: 11, person: 'joann', title: 'TSMC 芋頭：回覆借用 switch 費用', detail: '', date: '2026-03-09', priority: 'normal'},
+            {id: 12, person: 'joann', title: '聯想：確認報價單及剩餘款項', detail: '', date: '2026-03-09', priority: 'urgent'},
+            {id: 13, person: 'joann', title: '高雄沛華：致電', detail: '', date: '2026-03-09', priority: 'normal'},
+            {id: 14, person: 'joann', title: '發票處理', detail: '寵物百分百、聯想', date: '2026-03-09', priority: 'normal'},
+            {id: 15, person: 'joann', title: '金車：週二給報價', detail: '', date: '2026-03-10', priority: 'urgent'},
+            {id: 16, person: 'joann', title: '科林：週三給報價企劃', detail: '', date: '2026-03-11', priority: 'urgent'},
+            {id: 17, person: 'joann', title: 'TSMC 子倫：六福村/綠世界/華山討論', detail: '實境解謎', date: '2026-03-12', priority: 'urgent'},
+            {id: 18, person: 'joann', title: '聯想線上討論', detail: '', date: '2026-03-12', priority: 'normal'},
+            
+            // 即將舉辦活動（特別標註）
+            {id: 19, person: 'elly', title: '⚡ 博士倫 外場活動', detail: '3/13 博士倫福爾摩斯', date: '2026-03-13', priority: 'urgent', event: true},
+            {id: 20, person: 'churong', title: '⚡ 光宸科技 金牌特務', detail: '3/25 活動執行', date: '2026-03-25', priority: 'urgent', event: true},
+            {id: 21, person: 'elly', title: '⚡ JCB 福爾摩斯', detail: '3/27 活動執行', date: '2026-03-27', priority: 'urgent', event: true},
+        ];
+        
+        let currentPerson = 'elly';
+        
+        function renderTasks() {
+            // 計算每個人待辦數
+            document.getElementById('elly-count').textContent = tasks.filter(t => t.person === 'elly').length;
+            document.getElementById('churong-count').textContent = tasks.filter(t => t.person === 'churong').length;
+            document.getElementById('joann-count').textContent = tasks.filter(t => t.person === 'joann').length;
+            
+            ['elly', 'churong', 'joann'].forEach(person => {
+                const container = document.getElementById(person + '-tasks');
+                const personTasks = tasks.filter(t => t.person === person);
+                
+                // 移除舊內容，保留標題
+                const title = container.querySelector('h3');
+                container.innerHTML = '';
+                container.appendChild(title);
+                
+                if (personTasks.length === 0) {
+                    container.innerHTML += '<p style="opacity:0.5;">暫無待辦事項</p>';
+                }
+                
+                personTasks.forEach(task => {
+                    const priorityClass = task.priority === 'urgent' ? 'border-left: 4px solid #ef4444;' : '';
+                    const urgentTag = task.priority === 'urgent' ? '<span class="urgent-tag">⚡ 緊急</span>' : '';
+                    const eventTag = task.event ? '<span class="urgent-tag" style="background:linear-gradient(135deg,#f59e0b,#d97706)">🎯 活動日</span>' : '';
+                    
+                    container.innerHTML += `
+                        <div class="task-card" style="${priorityClass}">
+                            <div class="task-header">
+                                <span class="task-date">📅 ${task.date}</span>
+                                <div class="task-actions">
+                                    ${urgentTag}
+                                    ${eventTag}
+                                    <button class="btn-action btn-edit" onclick="editTask(${task.id})">✏️</button>
+                                    <button class="btn-action btn-delete" onclick="deleteTask(${task.id})">🗑️</button>
+                                </div>
+                            </div>
+                            <div class="task-title">${task.title}</div>
+                            ${task.detail ? '<div class="task-detail">' + task.detail + '</div>' : ''}
+                        </div>
+                    `;
+                });
+            });
+        }
+        
+        function showPerson(person) {
+            currentPerson = person;
+            document.querySelectorAll('.person-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector('.person-tab.' + person).classList.add('active');
+            document.querySelectorAll('.person-content').forEach(c => c.style.display = 'none');
+            document.getElementById(person + '-tasks').style.display = 'block';
+        }
+        
+        function openModal() {
+            document.getElementById('taskModal').classList.add('show');
+            document.getElementById('taskPersonSelect').value = currentPerson;
+            document.getElementById('taskId').value = '';
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDetail').value = '';
+            document.getElementById('taskDate').value = '';
+            document.getElementById('taskPriority').value = 'normal';
+        }
+        
+        function closeModal() {
+            document.getElementById('taskModal').classList.remove('show');
+        }
+        
+        function saveTask() {
+            const id = document.getElementById('taskId').value;
+            const person = document.getElementById('taskPersonSelect').value;
+            const title = document.getElementById('taskTitle').value;
+            const detail = document.getElementById('taskDetail').value;
+            const date = document.getElementById('taskDate').value;
+            const priority = document.getElementById('taskPriority').value;
+            
+            if (!title || !date) {
+                alert('請填寫任務名稱和日期');
+                return;
+            }
+            
+            if (id) {
+                // 編輯
+                const task = tasks.find(t => t.id == id);
+                task.person = person;
+                task.title = title;
+                task.detail = detail;
+                task.date = date;
+                task.priority = priority;
+            } else {
+                // 新增
+                tasks.push({
+                    id: Date.now(),
+                    person,
+                    title,
+                    detail,
+                    date,
+                    priority
+                });
+            }
+            
+            renderTasks();
+            closeModal();
+        }
+        
+        function editTask(id) {
+            const task = tasks.find(t => t.id == id);
+            document.getElementById('taskId').value = task.id;
+            document.getElementById('taskPersonSelect').value = task.person;
+            document.getElementById('taskTitle').value = task.title;
+            document.getElementById('taskDetail').value = task.detail || '';
+            document.getElementById('taskDate').value = task.date;
+            document.getElementById('taskPriority').value = task.priority || 'normal';
+            document.getElementById('taskModal').classList.add('show');
+        }
+        
+        function deleteTask(id) {
+            if (confirm('確定刪除此任務？')) {
+                tasks = tasks.filter(t => t.id != id);
+                renderTasks();
+            }
+        }
+        
+        // 初始化
+        renderTasks();
+    </script>
 </body>
 </html>
