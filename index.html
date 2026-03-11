@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📋 本週工作待辦事項</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root { --primary: #6366f1; --success: #10b981; --warning: #f59e0b; --danger: #ef4444; --info: #3b82f6; }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); min-height: 100vh; color: #fff; }
+        .header { background: linear-gradient(90deg, #6366f1, #8b5cf6); padding: 20px; text-align: center; border-radius: 0 0 20px 20px; }
+        .day-card { background: rgba(255,255,255,0.08); border-radius: 16px; margin-bottom: 20px; overflow: hidden; }
+        .day-header { padding: 15px 20px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .day-monday { background: linear-gradient(90deg, #3b82f6, #1d4ed8); }
+        .day-tuesday { background: linear-gradient(90deg, #8b5cf6, #7c3aed); }
+        .day-wednesday { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .day-thursday { background: linear-gradient(90deg, #10b981, #059669); }
+        .day-friday { background: linear-gradient(90deg, #ef4444, #dc2626); }
+        .task-list { padding: 15px; }
+        .task-item { display: flex; align-items: flex-start; padding: 12px; margin: 8px 0; background: rgba(255,255,255,0.05); border-radius: 10px; transition: all 0.3s; }
+        .task-item:hover { background: rgba(255,255,255,0.1); transform: translateX(5px); }
+        .task-time { min-width: 60px; font-weight: bold; color: #f59e0b; font-size: 0.9rem; }
+        .task-content { flex: 1; }
+        .task-title { font-weight: 600; margin-bottom: 5px; }
+        .task-detail { font-size: 0.85rem; opacity: 0.7; }
+        .task-tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 0.75rem; margin-right: 5px; }
+        .tag-recurring { background: rgba(139, 92, 246, 0.3); color: #a78bfa; }
+        .tag-urgent { background: rgba(239, 68, 68, 0.3); color: #fca5a5; }
+        .tag-client { background: rgba(59, 130, 246, 0.3); color: #93c5fd; }
+        .summary-card { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 20px; margin-bottom: 20px; }
+        .summary-stat { text-align: center; padding: 15px; }
+        .summary-number { font-size: 2rem; font-weight: bold; }
+        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
+        .footer { text-align: center; padding: 20px; opacity: 0.5; font-size: 0.8rem; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 本週工作待辦事項</h1>
+        <p>2026年3月9日 - 3月13日</p>
+    </div>
+    <div class="container">
+        <!-- 總覽 -->
+        <div class="row summary-card">
+            <div class="col-4 summary-stat">
+                <div class="summary-number" style="color: #3b82f6;">13</div>
+                <div>任務數</div>
+            </div>
+            <div class="col-4 summary-stat">
+                <div class="summary-number" style="color: #10b981;">8</div>
+                <div>定期任務</div>
+            </div>
+            <div class="col-4 summary-stat">
+                <div class="summary-number" style="color: #f59e0b;">5</div>
+                <div>客戶專案</div>
+            </div>
+        </div>
+        
+        <!-- 週一 -->
+        <div class="day-card">
+            <div class="day-header day-monday">
+                <span>📅 週一 (3/9)</span>
+                <span>4 項任務</span>
+            </div>
+            <div class="task-list">
+                <div class="task-item">
+                    <div class="task-time">08:00</div>
+                    <div class="task-content">
+                        <div class="task-title">▲一上午：待辦如下</div>
+                        <span class="task-tag tag-recurring">每週重複</span>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">10:00</div>
+                    <div class="task-content">
+                        <div class="task-title">聿心發票：更正</div>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">11:00</div>
+                    <div class="task-content">
+                        <div class="task-title">每週追蹤專案進度</div>
+                        <div class="task-detail">待辦/活動前置/客戶聯繫</div>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">14:00</div>
+                    <div class="task-content">
+                        <div class="task-title">活動照片雲端：給客戶</div>
+                        <div class="task-detail">0303杰力 / 0304寵物 / 0306聯想</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 週二 -->
+        <div class="day-card">
+            <div class="day-header day-tuesday">
+                <span>📅 週二 (3/10)</span>
+                <span>2 項任務</span>
+            </div>
+            <div class="task-list">
+                <div class="task-item">
+                    <div class="task-time">08:00</div>
+                    <div class="task-content">
+                        <div class="task-title">▲二上午：待辦如下</div>
+                        <span class="task-tag tag-recurring">每週重複</span>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">17:00</div>
+                    <div class="task-content">
+                        <div class="task-title">2026科林集團家庭日</div>
+                        <div class="task-detail">初步企劃3/11提供 (活動/場地/餐點)</div>
+                        <span class="task-tag tag-client">新客戶</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 週三 -->
+        <div class="day-card">
+            <div class="day-header day-wednesday">
+                <span>📅 週三 (3/11)</span>
+                <span>4 項任務</span>
+            </div>
+            <div class="task-list">
+                <div class="task-item">
+                    <div class="task-time">08:00</div>
+                    <div class="task-content">
+                        <div class="task-title">▲三上午：待辦如下</div>
+                        <span class="task-tag tag-recurring">每週重複</span>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">11:00</div>
+                    <div class="task-content">
+                        <div class="task-title">IG 影片</div>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">13:00</div>
+                    <div class="task-content">
+                        <div class="task-title">金牌特務企劃：更新</div>
+                        <div class="task-detail">任務類型 / 標配選配 / 報價單</div>
+                        <span class="task-tag tag-client">進行中</span>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">16:00</div>
+                    <div class="task-content">
+                        <div class="task-title">更新體能之巔提案：照片</div>
+                        <div class="task-detail">競賽 / 不NG</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 週四 -->
+        <div class="day-card">
+            <div class="day-header day-thursday">
+                <span>📅 週四 (3/12)</span>
+                <span>6 項任務</span>
+            </div>
+            <div class="task-list">
+                <div class="task-item">
+                    <div class="task-time">08:00</div>
+                    <div class="task-content">
+                        <div class="task-title">▲四上午：待辦如下</div>
+                        <span class="task-tag tag-recurring">每週重複</span>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">11:00</div>
+                    <div class="task-content">
+                        <div class="task-title">更新輸出：公版300秒知識問答</div>
+                        <div class="task-detail">公版：題目10套 (10x20cm)</div>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">14:00</div>
+                    <div class="task-content">
+                        <div class="task-title">樂點抽獎活動：楚融生日設計</div>
+                        <div class="task-detail">0320抽獎公告 / 0326中獎公告</div>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">15:00</div>
+                    <div class="task-content">
+                        <div class="task-title">金牌特務：道具整理確認</div>
+                        <div class="task-detail">負責人：楚融</div>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">16:00</div>
+                    <div class="task-content">
+                        <div class="task-title">確認上貨：楚融</div>
+                        <div class="task-detail">肺肺撞球板子</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 週五 -->
+        <div class="day-card">
+            <div class="day-header day-friday">
+                <span>📅 週五 (3/13)</span>
+                <span>3 項任務</span>
+            </div>
+            <div class="task-list">
+                <div class="task-item">
+                    <div class="task-time">08:00</div>
+                    <div class="task-content">
+                        <div class="task-title">▲五上午：活動執行</div>
+                        <span class="task-tag tag-recurring">每週重複</span>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">12:00</div>
+                    <div class="task-content">
+                        <div class="task-title">外場：博士倫</div>
+                        <span class="task-tag tag-client">客戶活動</span>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">12:30</div>
+                    <div class="task-content">
+                        <div class="task-title">▼五下午：活動執行</div>
+                        <span class="task-tag tag-recurring">每週重複</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 下週預告 -->
+        <div class="day-card">
+            <div class="day-header" style="background: linear-gradient(90deg, #6b7280, #4b5563);">
+                <span>📆 下週預告 (3/16-20)</span>
+            </div>
+            <div class="task-list">
+                <div class="task-item">
+                    <div class="task-time">3/19</div>
+                    <div class="task-content">
+                        <div class="task-title">上貨：博士倫</div>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">3/25</div>
+                    <div class="task-content">
+                        <div class="task-title">光宸科技 - 金牌特務</div>
+                        <span class="task-tag tag-client">客戶活動</span>
+                    </div>
+                </div>
+                <div class="task-item">
+                    <div class="task-time">3/27</div>
+                    <div class="task-content">
+                        <div class="task-title">JCB - 福爾摩斯</div>
+                        <span class="task-tag tag-client">客戶活動</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        📋 樂點創意工作待辦事項 | 資料來源：Albert 提供 | 更新時間：2026/03/11
+    </div>
+</body>
+</html>
