@@ -7,206 +7,254 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root {
-            --elly-color: #3b82f6;
-            --churong-color: #10b981;
-            --joann-color: #8b5cf6;
-            --urgent-color: #ef4444;
-            --warning-color: #f59e0b;
-        }
-        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); min-height: 100vh; color: #fff; }
-        .header { background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 20px; text-align: center; border-radius: 0 0 20px 20px; }
-        .person-tabs { display: flex; justify-content: center; gap: 15px; padding: 20px; flex-wrap: wrap; }
-        .person-tab { padding: 12px 24px; border-radius: 25px; border: none; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
-        .person-tab.elly { background: rgba(59, 130, 246, 0.3); color: #60a5fa; }
-        .person-tab.elly.active { background: var(--elly-color); color: #fff; }
-        .person-tab.churong { background: rgba(16, 185, 129, 0.3); color: #34d399; }
-        .person-tab.churong.active { background: var(--churong-color); color: #fff; }
-        .person-tab.joann { background: rgba(139, 92, 246, 0.3); color: #a78bfa; }
-        .person-tab.joann.active { background: var(--joann-color); color: #fff; }
-        .container { max-width: 900px; margin: 0 auto; padding: 20px; }
-        .task-card { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 15px; margin-bottom: 15px; }
-        .task-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-        .task-date { font-size: 0.85rem; opacity: 0.7; }
-        .task-title { font-weight: 600; font-size: 1.1rem; margin-bottom: 8px; }
-        .task-detail { font-size: 0.9rem; opacity: 0.8; }
-        .task-actions { display: flex; gap: 8px; }
-        .btn-action { padding: 5px 12px; border: none; border-radius: 8px; cursor: pointer; }
-        .btn-edit { background: rgba(59, 130, 246, 0.3); color: #60a5fa; }
-        .btn-delete { background: rgba(239, 68, 68, 0.3); color: #fca5a5; }
-        .btn-add { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .urgent-tag { background: linear-gradient(135deg, #ef4444, #dc2626); color: #fff; padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; animation: pulse 2s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
-        .completed { opacity: 0.5; text-decoration: line-through; }
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; }
-        .modal.show { display: flex; align-items: center; justify-content: center; }
+        :root { --elly: #3b82f6; --churong: #10b981; --joann: #8b5cf6; --urgent: #ef4444; --warning: #f59e0b; }
+        body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); min-height: 100vh; color: #fff; margin: 0; }
+        .header { background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 20px; text-align: center; }
+        .nav { display: flex; justify-content: center; gap: 10px; padding: 15px; background: rgba(0,0,0,0.3); flex-wrap: wrap; }
+        .nav-btn { padding: 10px 20px; border: none; border-radius: 20px; cursor: pointer; font-size: 0.95rem; transition: 0.3s; }
+        .nav-btn.elly { background: rgba(59,130,246,0.3); color: #60a5fa; }
+        .nav-btn.elly.active { background: var(--elly); color: #fff; }
+        .nav-btn.churong { background: rgba(16,185,129,0.3); color: #34d399; }
+        .nav-btn.churong.active { background: var(--churong); color: #fff; }
+        .nav-btn.joann { background: rgba(139,92,246,0.3); color: #a78bfa; }
+        .nav-btn.joann.active { background: var(--joann); color: #fff; }
+        .nav-btn.summary { background: rgba(255,255,255,0.2); }
+        .nav-btn.summary.active { background: #fff; color: #1e293b; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .summary-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 20px; }
+        .summary-card { background: rgba(255,255,255,0.08); border-radius: 16px; padding: 20px; }
+        .summary-card h4 { margin: 0 0 15px 0; display: flex; align-items: center; gap: 10px; }
+        .task-list { max-height: 400px; overflow-y: auto; }
+        .task-item { background: rgba(255,255,255,0.05); padding: 12px; margin: 8px 0; border-radius: 10px; display: flex; justify-content: space-between; align-items: flex-start; }
+        .task-info { flex: 1; }
+        .task-title { font-weight: 600; margin-bottom: 5px; }
+        .task-date { font-size: 0.8rem; opacity: 0.7; }
+        .task-detail { font-size: 0.85rem; opacity: 0.8; margin-top: 5px; }
+        .urgent { border-left: 4px solid var(--urgent); background: rgba(239,68,68,0.1); }
+        .event { border-left: 4px solid var(--warning); background: rgba(245,158,11,0.1); }
+        .tag { display: inline-block; padding: 2px 10px; border-radius: 10px; font-size: 0.75rem; margin-right: 5px; }
+        .tag-urgent { background: var(--urgent); }
+        .tag-event { background: var(--warning); color: #000; }
+        .tag-done { background: rgba(16,185,129,0.3); }
+        .btn-group { display: flex; gap: 5px; }
+        .btn-action { padding: 5px 10px; border: none; border-radius: 8px; cursor: pointer; font-size: 0.85rem; }
+        .btn-edit { background: rgba(59,130,246,0.3); color: #60a5fa; }
+        .btn-delete { background: rgba(239,68,68,0.3); color: #fca5a5; }
+        .btn-done { background: rgba(16,185,129,0.3); color: #34d399; }
+        .fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #6366f1, #8b5cf6); color: #fff; border: none; font-size: 24px; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; align-items: center; justify-content: center; }
+        .modal.show { display: flex; }
         .modal-content { background: #1e293b; padding: 30px; border-radius: 16px; width: 90%; max-width: 500px; }
-        .form-control { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px; border-radius: 8px; width: 100%; margin-bottom: 15px; }
+        .form-control { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 12px; border-radius: 8px; width: 100%; margin-bottom: 12px; box-sizing: border-box; }
         .form-control:focus { outline: none; border-color: #6366f1; }
-        .summary-stats { display: flex; justify-content: center; gap: 30px; padding: 20px; background: rgba(255,255,255,0.05); border-radius: 16px; margin-bottom: 20px; }
-        .stat-item { text-align: center; }
-        .stat-number { font-size: 1.5rem; font-weight: bold; }
+        .btn-save { background: #6366f1; color: #fff; padding: 12px; border: none; border-radius: 8px; width: 100%; cursor: pointer; }
+        .btn-cancel { background: rgba(255,255,255,0.1); color: #fff; padding: 12px; border: none; border-radius: 8px; width: 100%; margin-top: 10px; cursor: pointer; }
         .footer { text-align: center; padding: 20px; opacity: 0.5; font-size: 0.8rem; }
+        .person-summary { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .person-count { font-size: 1.2rem; font-weight: bold; }
+        @media (max-width: 768px) { .summary-cards { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>📋 樂點創意工作團隊待辦總表</h1>
-        <p>2026年3月</p>
+        <p>2026年3月 | 即時更新</p>
     </div>
     
-    <div class="person-tabs">
-        <button class="person-tab elly active" onclick="showPerson('elly')">👩 Elly</button>
-        <button class="person-tab churong" onclick="showPerson('churong')">👨 楚融</button>
-        <button class="person-tab joann" onclick="showPerson('joann')">👩‍💼 Joann</button>
+    <div class="nav">
+        <button class="nav-btn summary active" onclick="showView('summary')">📊 總覽</button>
+        <button class="nav-btn elly" onclick="showView('elly')">👩 Elly</button>
+        <button class="nav-btn churong" onclick="showView('churong')">👨 楚融</button>
+        <button class="nav-btn joann" onclick="showView('joann')">👩‍💼 Joann</button>
     </div>
     
     <div class="container">
-        <div class="summary-stats">
-            <div class="stat-item"><div class="stat-number" style="color: #60a5fa;" id="elly-count">0</div><div>Elly 待辦</div></div>
-            <div class="stat-item"><div class="stat-number" style="color: #34d399;" id="churong-count">0</div><div>楚融 待辦</div></div>
-            <div class="stat-item"><div class="stat-number" style="color: #a78bfa;" id="joann-count">0</div><div>Joann 待辦</div></div>
+        <!-- 總覽 View -->
+        <div id="summary-view">
+            <h3 style="margin: 20px 0;">📊 本週工作彙整</h3>
+            <div class="summary-cards">
+                <div class="summary-card" style="border-left: 4px solid var(--elly);">
+                    <h4 style="color: #60a5fa;">👩 Elly (<span id="elly-total">0</span>項)</h4>
+                    <div class="task-list" id="elly-summary"></div>
+                </div>
+                <div class="summary-card" style="border-left: 4px solid var(--churong);">
+                    <h4 style="color: #34d399;">👨 楚融 (<span id="churong-total">0</span>項)</h4>
+                    <div class="task-list" id="churong-summary"></div>
+                </div>
+                <div class="summary-card" style="border-left: 4px solid var(--joann);">
+                    <h4 style="color: #a78bfa;">👩‍💼 Joann (<span id="joann-total">0</span>項)</h4>
+                    <div class="task-list" id="joann-summary"></div>
+                </div>
+            </div>
+            
+            <h3 style="margin: 30px 0 15px;">🎯 即將舉辦活動</h3>
+            <div id="upcoming-events"></div>
         </div>
         
-        <!-- Elly 工作區 -->
-        <div id="elly-tasks" class="person-content">
-            <h3 style="color: #60a5fa; margin-bottom: 15px;">👩 Elly 的待辦事項</h3>
-            <!-- 任務會動態產生 -->
+        <!-- Elly View -->
+        <div id="elly-view" style="display:none;">
+            <h3 style="color: #60a5fa;">👩 Elly 的待辦事項</h3>
+            <div id="elly-tasks"></div>
         </div>
         
-        <!-- 楚融工作區 -->
-        <div id="churong-tasks" class="person-content" style="display:none;">
-            <h3 style="color: #34d399; margin-bottom: 15px;">👨 楚融 的待辦事項</h3>
-            <!-- 任務會動態產生 -->
+        <!-- 楚融 View -->
+        <div id="churong-view" style="display:none;">
+            <h3 style="color: #34d399;">👨 楚融 的待辦事項</h3>
+            <div id="churong-tasks"></div>
         </div>
         
-        <!-- Joann 工作區 -->
-        <div id="joann-tasks" class="person-content" style="display:none;">
-            <h3 style="color: #a78bfa; margin-bottom: 15px;">👩‍💼 Joann 的待辦事項</h3>
-            <!-- 任務會動態產生 -->
+        <!-- Joann View -->
+        <div id="joann-view" style="display:none;">
+            <h3 style="color: #a78bfa;">👩‍💼 Joann 的待辦事項</h3>
+            <div id="joann-tasks"></div>
         </div>
     </div>
     
-    <button class="btn-add" onclick="openModal()">+</button>
+    <button class="fab" onclick="openModal()">+</button>
     
-    <!-- 新增/編輯 Modal -->
+    <!-- Modal -->
     <div class="modal" id="taskModal">
         <div class="modal-content">
-            <h3 id="modalTitle" style="margin-bottom: 20px;">新增待辦</h3>
+            <h3 id="modalTitle" style="margin-bottom: 20px;">➕ 新增待辦</h3>
             <input type="hidden" id="taskId">
-            <input type="hidden" id="taskPerson">
-            <select class="form-control" id="taskPersonSelect">
+            <select class="form-control" id="taskPerson">
                 <option value="elly">👩 Elly</option>
                 <option value="churong">👨 楚融</option>
                 <option value="joann">👩‍💼 Joann</option>
             </select>
-            <input type="text" class="form-control" id="taskTitle" placeholder="任務名稱">
-            <input type="text" class="form-control" id="taskDetail" placeholder="任務詳情（選填）">
+            <input type="text" class="form-control" id="taskTitle" placeholder="任務名稱 *">
+            <input type="text" class="form-control" id="taskDetail" placeholder="任務詳情">
             <input type="date" class="form-control" id="taskDate">
             <select class="form-control" id="taskPriority">
                 <option value="normal">一般</option>
                 <option value="urgent">⚡ 緊急</option>
+                <option value="event">🎯 活動日</option>
             </select>
-            <div style="display: flex; gap: 10px;">
-                <button class="btn-action btn-edit" style="flex:1; padding: 12px;" onclick="saveTask()">儲存</button>
-                <button class="btn-action" style="flex:1; padding: 12px; background: rgba(255,255,255,0.1);" onclick="closeModal()">取消</button>
-            </div>
+            <button class="btn-save" onclick="saveTask()">💾 儲存</button>
+            <button class="btn-cancel" onclick="closeModal()">取消</button>
         </div>
     </div>
     
     <div class="footer">
-        📋 樂點創意工作團隊 | 資料僅供參考 | 更新時間：2026/03/12
+        📋 樂點創意 | 資料會儲存到瀏覽器 | 更新時間：2026/03/12
     </div>
     
     <script>
-        // 任務資料
-        let tasks = [
-            // Elly (藍底)
-            {id: 1, person: 'elly', title: '金牌特務企劃更新', detail: '任務類型 / 標配選配 / 報價單', date: '2026-03-11', priority: 'normal'},
-            {id: 2, person: 'elly', title: '每週追蹤專案進度', detail: '待辦/活動前置/客戶聯繫', date: '2026-03-09', priority: 'normal'},
-            {id: 3, person: 'elly', title: '案件進度追蹤', detail: 'mail/line/表單', date: '2026-03-09', priority: 'normal'},
-            
-            // Chu Rong (白底)
-            {id: 4, person: 'churong', title: '楚融生日抽獎設計', detail: '0320抽獎公告 / 0326中獎公告', date: '2026-03-12', priority: 'urgent'},
-            {id: 5, person: 'churong', title: '金牌特務道具整理確認', detail: '負責人：楚融', date: '2026-03-12', priority: 'urgent'},
-            {id: 6, person: 'churong', title: '確認上貨', detail: '肺肺撞球板子', date: '2026-03-12', priority: 'urgent'},
-            {id: 7, person: 'churong', title: '更新體能之巔提案照片', detail: '競賽 / 不NG', date: '2026-03-11', priority: 'normal'},
-            
-            // Joann (黑底)
-            {id: 8, person: 'joann', title: '顯葳股份：大富翁報價、場地', detail: '', date: '2026-03-09', priority: 'urgent'},
-            {id: 9, person: 'joann', title: 'TSMC 徐文馨秘書 Fiona：報價單', detail: '', date: '2026-03-09', priority: 'urgent'},
-            {id: 10, person: 'joann', title: 'TSMC IT PLED 謝秘書：破風報價單', detail: '', date: '2026-03-09', priority: 'urgent'},
-            {id: 11, person: 'joann', title: 'TSMC 芋頭：回覆借用 switch 費用', detail: '', date: '2026-03-09', priority: 'normal'},
-            {id: 12, person: 'joann', title: '聯想：確認報價單及剩餘款項', detail: '', date: '2026-03-09', priority: 'urgent'},
-            {id: 13, person: 'joann', title: '高雄沛華：致電', detail: '', date: '2026-03-09', priority: 'normal'},
-            {id: 14, person: 'joann', title: '發票處理', detail: '寵物百分百、聯想', date: '2026-03-09', priority: 'normal'},
-            {id: 15, person: 'joann', title: '金車：週二給報價', detail: '', date: '2026-03-10', priority: 'urgent'},
-            {id: 16, person: 'joann', title: '科林：週三給報價企劃', detail: '', date: '2026-03-11', priority: 'urgent'},
-            {id: 17, person: 'joann', title: 'TSMC 子倫：六福村/綠世界/華山討論', detail: '實境解謎', date: '2026-03-12', priority: 'urgent'},
-            {id: 18, person: 'joann', title: '聯想線上討論', detail: '', date: '2026-03-12', priority: 'normal'},
-            
-            // 即將舉辦活動（特別標註）
-            {id: 19, person: 'elly', title: '⚡ 博士倫 外場活動', detail: '3/13 博士倫福爾摩斯', date: '2026-03-13', priority: 'urgent', event: true},
-            {id: 20, person: 'churong', title: '⚡ 光宸科技 金牌特務', detail: '3/25 活動執行', date: '2026-03-25', priority: 'urgent', event: true},
-            {id: 21, person: 'elly', title: '⚡ JCB 福爾摩斯', detail: '3/27 活動執行', date: '2026-03-27', priority: 'urgent', event: true},
+        // 預設任務資料
+        const defaultTasks = [
+            // Elly
+            {id:1,person:'elly',title:'金牌特務企劃更新',detail:'任務類型/標配選配/報價單',date:'2026-03-11',priority:'urgent'},
+            {id:2,person:'elly',title:'每週追蹤專案進度',detail:'待辦/活動前置/客戶聯繫',date:'2026-03-09',priority:'normal'},
+            {id:3,person:'elly',title:'案件進度追蹤',detail:'mail/line/表單',date:'2026-03-09',priority:'normal'},
+            // 楚融
+            {id:4,person:'churong',title:'楚融生日抽獎設計',detail:'0320抽獎公告/0326中獎公告',date:'2026-03-12',priority:'urgent'},
+            {id:5,person:'churong',title:'金牌特務道具整理確認',detail:'負責人：楚融',date:'2026-03-12',priority:'urgent'},
+            {id:6,person:'churong',title:'確認上貨',detail:'肺肺撞球板子',date:'2026-03-12',priority:'urgent'},
+            {id:7,person:'churong',title:'更新體能之巔提案照片',detail:'競賽/不NG',date:'2026-03-11',priority:'normal'},
+            // Joann
+            {id:8,person:'joann',title:'顯葳股份：大富翁報價、場地',detail:'',date:'2026-03-09',priority:'urgent'},
+            {id:9,person:'joann',title:'TSMC 徐文馨秘書 Fiona：報價單',detail:'',date:'2026-03-09',priority:'urgent'},
+            {id:10,person:'joann',title:'TSMC IT PLED 謝秘書：破風報價單',detail:'',date:'2026-03-09',priority:'urgent'},
+            {id:11,person:'joann',title:'TSMC 芋頭：回覆借用 switch 費用',detail:'',date:'2026-03-09',priority:'normal'},
+            {id:12,person:'joann',title:'聯想：確認報價單及剩餘款項',detail:'',date:'2026-03-09',priority:'urgent'},
+            {id:13,person:'joann',title:'高雄沛華：致電',detail:'',date:'2026-03-09',priority:'normal'},
+            {id:14,person:'joann',title:'發票處理',detail:'寵物百分百、聯想',date:'2026-03-09',priority:'normal'},
+            {id:15,person:'joann',title:'金車：週二給報價',detail:'',date:'2026-03-10',priority:'urgent'},
+            {id:16,person:'joann',title:'科林：週三給報價企劃',detail:'',date:'2026-03-11',priority:'urgent'},
+            {id:17,person:'joann',title:'TSMC 子倫：六福村/綠世界/華山討論',detail:'實境解謎',date:'2026-03-12',priority:'urgent'},
+            {id:18,person:'joann',title:'聯想線上討論',detail:'',date:'2026-03-12',priority:'normal'},
+            // 活動
+            {id:19,person:'elly',title:'博士倫 外場活動',detail:'3/13',date:'2026-03-13',priority:'event'},
+            {id:20,person:'churong',title:'光宸科技 金牌特務',detail:'3/25',date:'2026-03-25',priority:'event'},
+            {id:21,person:'elly',title:'JCB 福爾摩斯',detail:'3/27',date:'2026-03-27',priority:'event'},
         ];
         
-        let currentPerson = 'elly';
+        // 從 localStorage 載入或使用預設
+        let tasks = JSON.parse(localStorage.getItem('funideas-tasks')) || defaultTasks;
         
-        function renderTasks() {
-            // 計算每個人待辦數
-            document.getElementById('elly-count').textContent = tasks.filter(t => t.person === 'elly').length;
-            document.getElementById('churong-count').textContent = tasks.filter(t => t.person === 'churong').length;
-            document.getElementById('joann-count').textContent = tasks.filter(t => t.person === 'joann').length;
+        function saveTasks() {
+            localStorage.setItem('funideas-tasks', JSON.stringify(tasks));
+            renderAll();
+        }
+        
+        function renderAll() {
+            renderSummary();
+            renderPerson('elly', 'elly-tasks');
+            renderPerson('churong', 'churong-tasks');
+            renderPerson('joann', 'joann-tasks');
+            renderEvents();
+        }
+        
+        function renderSummary() {
+            document.getElementById('elly-total').textContent = tasks.filter(t => t.person === 'elly').length;
+            document.getElementById('churong-total').textContent = tasks.filter(t => t.person === 'churong').length;
+            document.getElementById('joann-total').textContent = tasks.filter(t => t.person === 'joann').length;
             
-            ['elly', 'churong', 'joann'].forEach(person => {
-                const container = document.getElementById(person + '-tasks');
-                const personTasks = tasks.filter(t => t.person === person);
-                
-                // 移除舊內容，保留標題
-                const title = container.querySelector('h3');
-                container.innerHTML = '';
-                container.appendChild(title);
-                
-                if (personTasks.length === 0) {
-                    container.innerHTML += '<p style="opacity:0.5;">暫無待辦事項</p>';
-                }
-                
-                personTasks.forEach(task => {
-                    const priorityClass = task.priority === 'urgent' ? 'border-left: 4px solid #ef4444;' : '';
-                    const urgentTag = task.priority === 'urgent' ? '<span class="urgent-tag">⚡ 緊急</span>' : '';
-                    const eventTag = task.event ? '<span class="urgent-tag" style="background:linear-gradient(135deg,#f59e0b,#d97706)">🎯 活動日</span>' : '';
-                    
-                    container.innerHTML += `
-                        <div class="task-card" style="${priorityClass}">
-                            <div class="task-header">
-                                <span class="task-date">📅 ${task.date}</span>
-                                <div class="task-actions">
-                                    ${urgentTag}
-                                    ${eventTag}
-                                    <button class="btn-action btn-edit" onclick="editTask(${task.id})">✏️</button>
-                                    <button class="btn-action btn-delete" onclick="deleteTask(${task.id})">🗑️</button>
-                                </div>
-                            </div>
-                            <div class="task-title">${task.title}</div>
-                            ${task.detail ? '<div class="task-detail">' + task.detail + '</div>' : ''}
-                        </div>
-                    `;
-                });
+            ['elly', 'churong', 'joann'].forEach(p => {
+                const container = document.getElementById(p + '-summary');
+                const pTasks = tasks.filter(t => t.person === p).slice(0, 5);
+                container.innerHTML = pTasks.map(t => createTaskHTML(t, false)).join('');
             });
         }
         
-        function showPerson(person) {
-            currentPerson = person;
-            document.querySelectorAll('.person-tab').forEach(t => t.classList.remove('active'));
-            document.querySelector('.person-tab.' + person).classList.add('active');
-            document.querySelectorAll('.person-content').forEach(c => c.style.display = 'none');
-            document.getElementById(person + '-tasks').style.display = 'block';
+        function renderPerson(person, containerId) {
+            const container = document.getElementById(containerId);
+            const pTasks = tasks.filter(t => t.person === person);
+            if (pTasks.length === 0) {
+                container.innerHTML = '<p style="opacity:0.5;">暫無待辦事項</p>';
+                return;
+            }
+            container.innerHTML = pTasks.map(t => createTaskHTML(t, true)).join('');
+        }
+        
+        function createTaskHTML(task, showActions) {
+            const priorityClass = task.priority === 'urgent' ? 'urgent' : (task.priority === 'event' ? 'event' : '');
+            const tags = [];
+            if (task.priority === 'urgent') tags.push('<span class="tag tag-urgent">⚡</span>');
+            if (task.priority === 'event') tags.push('<span class="tag tag-event">🎯</span>');
+            
+            const actions = showActions ? `
+                <div class="btn-group">
+                    <button class="btn-action btn-edit" onclick="editTask(${task.id})">✏️</button>
+                    <button class="btn-action btn-delete" onclick="deleteTask(${task.id})">🗑️</button>
+                </div>
+            ` : '';
+            
+            return `
+                <div class="task-item ${priorityClass}">
+                    <div class="task-info">
+                        <div class="task-title">${task.title}</div>
+                        ${task.detail ? '<div class="task-detail">' + task.detail + '</div>' : ''}
+                        <div class="task-date">📅 ${task.date} ${tags.join('')}</div>
+                    </div>
+                    ${actions}
+                </div>
+            `;
+        }
+        
+        function renderEvents() {
+            const events = tasks.filter(t => t.priority === 'event');
+            const container = document.getElementById('upcoming-events');
+            container.innerHTML = events.map(t => `
+                <div class="task-item event">
+                    <div class="task-info">
+                        <div class="task-title">🎯 ${t.title}</div>
+                        <div class="task-detail">${t.detail || ''}</div>
+                        <div class="task-date">📅 ${t.date}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function showView(view) {
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector('.nav-btn.' + view).classList.add('active');
+            document.querySelectorAll('[id$="-view"]').forEach(v => v.style.display = 'none');
+            document.getElementById(view + '-view').style.display = 'block';
         }
         
         function openModal() {
             document.getElementById('taskModal').classList.add('show');
-            document.getElementById('taskPersonSelect').value = currentPerson;
             document.getElementById('taskId').value = '';
             document.getElementById('taskTitle').value = '';
             document.getElementById('taskDetail').value = '';
@@ -220,19 +268,15 @@
         
         function saveTask() {
             const id = document.getElementById('taskId').value;
-            const person = document.getElementById('taskPersonSelect').value;
+            const person = document.getElementById('taskPerson').value;
             const title = document.getElementById('taskTitle').value;
             const detail = document.getElementById('taskDetail').value;
             const date = document.getElementById('taskDate').value;
             const priority = document.getElementById('taskPriority').value;
             
-            if (!title || !date) {
-                alert('請填寫任務名稱和日期');
-                return;
-            }
+            if (!title || !date) { alert('請填寫任務名稱和日期'); return; }
             
             if (id) {
-                // 編輯
                 const task = tasks.find(t => t.id == id);
                 task.person = person;
                 task.title = title;
@@ -240,41 +284,33 @@
                 task.date = date;
                 task.priority = priority;
             } else {
-                // 新增
-                tasks.push({
-                    id: Date.now(),
-                    person,
-                    title,
-                    detail,
-                    date,
-                    priority
-                });
+                tasks.push({ id: Date.now(), person, title, detail, date, priority });
             }
             
-            renderTasks();
+            saveTasks();
             closeModal();
         }
         
         function editTask(id) {
             const task = tasks.find(t => t.id == id);
             document.getElementById('taskId').value = task.id;
-            document.getElementById('taskPersonSelect').value = task.person;
+            document.getElementById('taskPerson').value = task.person;
             document.getElementById('taskTitle').value = task.title;
             document.getElementById('taskDetail').value = task.detail || '';
             document.getElementById('taskDate').value = task.date;
-            document.getElementById('taskPriority').value = task.priority || 'normal';
+            document.getElementById('taskPriority').value = task.priority;
             document.getElementById('taskModal').classList.add('show');
         }
         
         function deleteTask(id) {
-            if (confirm('確定刪除此任務？')) {
+            if (confirm('確定刪除？')) {
                 tasks = tasks.filter(t => t.id != id);
-                renderTasks();
+                saveTasks();
             }
         }
         
         // 初始化
-        renderTasks();
+        renderAll();
     </script>
 </body>
 </html>
