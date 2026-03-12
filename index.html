@@ -6,20 +6,23 @@
     <title>📋 樂點創意工作管理系統 - IVE</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        :root { --elly: #3b82f6; --churong: #10b981; --joann: #8b5cf6; --urgent: #ef4444; --done: #22c55e; }
+        :root { --albert: #f59e0b; --elly: #ec4899; --joann: #8b5cf6; --urgent: #ef4444; --done: #22c55e; }
         body { font-family: 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); min-height: 100vh; color: #fff; }
         .header { background: linear-gradient(135deg, #6366f1, #8b5cf6); padding: 20px; text-align: center; }
         .nav { display: flex; justify-content: center; gap: 10px; padding: 15px; flex-wrap: wrap; }
         .nav-btn { padding: 10px 20px; border: none; border-radius: 20px; cursor: pointer; font-size: 1rem; transition: 0.3s; }
-        .nav-btn.elly { background: rgba(59,130,246,0.3); color: #60a5fa; }
-        .nav-btn.elly.active { background: var(--elly); color: #fff; }
-        .nav-btn.churong { background: rgba(16,185,129,0.3); color: #34d399; }
-        .nav-btn.churong.active { background: var(--churong); color: #fff; }
-        .nav-btn.joann { background: rgba(139,92,246,0.3); color: #a78bfa; }
-        .nav-btn.joann.active { background: var(--joann); color: #fff; }
         .nav-btn.summary { background: rgba(255,255,255,0.2); }
         .nav-btn.summary.active { background: #fff; color: #1e293b; }
+        .nav-btn.albert { background: rgba(245,158,11,0.3); color: #fbbf24; }
+        .nav-btn.albert.active { background: var(--albert); color: #fff; }
+        .nav-btn.elly { background: rgba(236,72,153,0.3); color: #f472b6; }
+        .nav-btn.elly.active { background: var(--elly); color: #fff; }
+        .nav-btn.joann { background: rgba(139,92,246,0.3); color: #a78bfa; }
+        .nav-btn.joann.active { background: var(--joann); color: #fff; }
         .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .stats { display: flex; justify-content: center; gap: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+        .stat { text-align: center; padding: 10px; }
+        .stat-num { font-size: 1.5rem; font-weight: bold; }
         .task-card { background: rgba(255,255,255,0.08); border-radius: 12px; padding: 15px; margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
         .task-card.completed { opacity: 0.6; }
         .task-card.completed .task-title { text-decoration: line-through; }
@@ -40,37 +43,34 @@
         .modal.show { display: flex; }
         .modal-content { background: #1e293b; padding: 25px; border-radius: 16px; width: 90%; max-width: 450px; }
         .form-control { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 10px; border-radius: 8px; width: 100%; margin-bottom: 10px; }
-        .stats { display: flex; justify-content: center; gap: 20px; padding: 15px; background: rgba(255,255,255,0.05); border-radius: 12px; margin-bottom: 20px; }
-        .stat { text-align: center; }
-        .stat-num { font-size: 1.5rem; font-weight: bold; }
         .footer { text-align: center; padding: 20px; opacity: 0.5; font-size: 0.8rem; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>📋 樂點創意工作管理系統</h1>
-        <p>IVE 幫您管理 | 資料自動儲存</p>
+        <p>IVE 幫您管理 | 勾選完成立即更新</p>
     </div>
     <div class="nav">
         <button class="nav-btn summary active" onclick="showView('summary')">📊 總覽</button>
+        <button class="nav-btn albert" onclick="showView('albert')">👨 Albert</button>
         <button class="nav-btn elly" onclick="showView('elly')">👩 Elly</button>
-        <button class="nav-btn churong" onclick="showView('churong')">👨 楚融</button>
         <button class="nav-btn joann" onclick="showView('joann')">👩‍💼 Joann</button>
     </div>
     <div class="container">
         <div class="stats" id="stats">
-            <div class="stat"><div class="stat-num" style="color:#60a5fa" id="elly-total">0</div><div>Elly 待辦</div></div>
-            <div class="stat"><div class="stat-num" style="color:#34d399" id="churong-total">0</div><div>楚融 待辦</div></div>
-            <div class="stat"><div class="stat-num" style="color:#a78bfa" id="joann-total">0</div><div>Joann 待辦</div></div>
-            <div class="stat"><div class="stat-num" style="color:#22c55e" id="done-total">0</div><div>已完成</div></div>
+            <div class="stat"><div class="stat-num" style="color:#fbbf24" id="albert-total">0</div><div>👨 Albert 待辦</div></div>
+            <div class="stat"><div class="stat-num" style="color:#f472b6" id="elly-total">0</div><div>👩 Elly 待辦</div></div>
+            <div class="stat"><div class="stat-num" style="color:#a78bfa" id="joann-total">0</div><div>👩‍💼 Joann 待辦</div></div>
+            <div class="stat"><div class="stat-num" style="color:#22c55e" id="done-total">0</div><div>✅ 已完成</div></div>
         </div>
         <div id="summary-view">
-            <h3 style="margin:15px 0;">📊 總覽</h3>
+            <h3 style="margin:15px 0">📊 總覽 - 所有工作進度</h3>
             <div id="summary-tasks"></div>
         </div>
-        <div id="elly-view" style="display:none;"><h3 style="color:#60a5fa">👩 Elly</h3><div id="elly-tasks"></div></div>
-        <div id="churong-view" style="display:none;"><h3 style="color:#34d399">👨 楚融</h3><div id="churong-tasks"></div></div>
-        <div id="joann-view" style="display:none;"><h3 style="color:#a78bfa">👩‍💼 Joann</h3><div id="joann-tasks"></div></div>
+        <div id="albert-view" style="display:none"><h3 style="color:#fbbf24">👨 Albert 老闆</h3><div id="albert-tasks"></div></div>
+        <div id="elly-view" style="display:none"><h3 style="color:#f472b6">👩 Elly</h3><div id="elly-tasks"></div></div>
+        <div id="joann-view" style="display:none"><h3 style="color:#a78bfa">👩‍💼 Joann</h3><div id="joann-tasks"></div></div>
     </div>
     <button class="fab" onclick="openModal()">+</button>
     <div class="modal" id="taskModal">
@@ -78,8 +78,8 @@
             <h3 style="margin-bottom:15px">➕ 新增/編輯任務</h3>
             <input type="hidden" id="taskId">
             <select class="form-control" id="taskPerson">
+                <option value="albert">👨 Albert (老闆)</option>
                 <option value="elly">👩 Elly</option>
-                <option value="churong">👨 楚融</option>
                 <option value="joann">👩‍💼 Joann</option>
             </select>
             <input type="text" class="form-control" id="taskTitle" placeholder="任務名稱 *">
@@ -94,44 +94,37 @@
             <button class="form-control" style="background:rgba(255,255,255,0.1);cursor:pointer;margin-top:8px" onclick="closeModal()">取消</button>
         </div>
     </div>
-    <div class="footer">IVE 工作管理系統 | 資料儲存於瀏覽器 | 更新時間：2026/03/12</div>
+    <div class="footer">IVE 工作管理系統 | 勾選完成即時更新 | 更新時間：2026/03/12</div>
     <script>
     const defaultTasks = [
-        {id:1,person:'elly',title:'金牌特務企劃更新',detail:'任務類型/標配選配/報價單',date:'2026-03-11',priority:'urgent',completed:false},
-        {id:2,person:'elly',title:'每週追蹤專案進度',detail:'待辦/活動前置/客戶聯繫',date:'2026-03-12',priority:'normal',completed:false},
-        {id:3,person:'elly',title:'案件進度追蹤',detail:'mail/line/表單',date:'2026-03-12',priority:'normal',completed:false},
-        {id:4,person:'churong',title:'楚融生日抽獎設計',detail:'0320抽獎公告',date:'2026-03-12',priority:'urgent',completed:false},
-        {id:5,person:'churong',title:'金牌特務道具整理',detail:'負責人：楚融',date:'2026-03-12',priority:'urgent',completed:false},
-        {id:6,person:'churong',title:'確認上貨',detail:'肺肺撞球板子',date:'2026-03-12',priority:'urgent',completed:false},
-        {id:7,person:'joann',title:'顯葳股份：大富翁報價',detail:'',date:'2026-03-12',priority:'urgent',completed:false},
-        {id:8,person:'joann',title:'TSMC 報價單',detail:'',date:'2026-03-12',priority:'urgent',completed:false},
-        {id:9,person:'joann',title:'聯想：確認報價單',detail:'',date:'2026-03-12',priority:'urgent',completed:false},
-        {id:10,person:'joann',title:'金車：給報價',detail:'',date:'2026-03-13',priority:'urgent',completed:false},
+        {id:1,person:'albert',title:'架設 OpenClaw AI 助理系統',detail:'建立多 Bot 自動化回覆',date:'2026-03-12',priority:'urgent',completed:true},
+        {id:2,person:'albert',title:'建立 IVE 工作管理系統',detail:'網站上線、勾選功能',date:'2026-03-12',priority:'urgent',completed:true},
+        {id:3,person:'albert',title:'建立 4 個 Telegram Bot',detail:'IVE/I-DLE/TWICE/ITZY',date:'2026-03-12',priority:'urgent',completed:true},
+        {id:4,person:'albert',title:'整合 Google 服務',detail:'Gmail, Calendar, Drive',date:'2026-03-11',priority:'normal',completed:true},
+        {id:5,person:'elly',title:'金牌特務企劃更新',detail:'任務類型/標配選配/報價單',date:'2026-03-12',priority:'urgent',completed:false},
+        {id:6,person:'elly',title:'每週追蹤專案進度',detail:'待辦/活動前置/客戶聯繫',date:'2026-03-12',priority:'normal',completed:false},
+        {id:7,person:'elly',title:'案件進度追蹤',detail:'mail/line/表單',date:'2026-03-12',priority:'normal',completed:false},
+        {id:8,person:'joann',title:'顯葳股份：大富翁報價',detail:'',date:'2026-03-12',priority:'urgent',completed:false},
+        {id:9,person:'joann',title:'TSMC 報價單處理',detail:'',date:'2026-03-12',priority:'urgent',completed:false},
+        {id:10,person:'joann',title:'聯想：確認報價單',detail:'',date:'2026-03-12',priority:'urgent',completed:false},
+        {id:11,person:'joann',title:'金車：給報價',detail:'',date:'2026-03-13',priority:'urgent',completed:false},
     ];
     
-    // 載入或初始化
     let tasks = JSON.parse(localStorage.getItem('funideas-tasks')) || defaultTasks;
     
     function saveTasks() {
         localStorage.setItem('funideas-tasks', JSON.stringify(tasks));
-        // 儲存到檔案（可匯出）
-        const blob = new Blob([JSON.stringify(tasks, null, 2)], {type:'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'tasks-backup.json';
-        // 不自動下載，只儲存
         renderAll();
     }
     
     function renderAll() {
+        document.getElementById('albert-total').textContent = tasks.filter(t=>t.person==='albert'&&!t.completed).length;
         document.getElementById('elly-total').textContent = tasks.filter(t=>t.person==='elly'&&!t.completed).length;
-        document.getElementById('churong-total').textContent = tasks.filter(t=>t.person==='churong'&&!t.completed).length;
         document.getElementById('joann-total').textContent = tasks.filter(t=>t.person==='joann'&&!t.completed).length;
         document.getElementById('done-total').textContent = tasks.filter(t=>t.completed).length;
         
+        renderPerson('albert','albert-tasks');
         renderPerson('elly','elly-tasks');
-        renderPerson('churong','churong-tasks');
         renderPerson('joann','joann-tasks');
         renderSummary();
     }
@@ -144,8 +137,8 @@
     
     function renderSummary() {
         const s = document.getElementById('summary-tasks');
-        const pending = tasks.filter(t=>!t.completed);
         const done = tasks.filter(t=>t.completed);
+        const pending = tasks.filter(t=>!t.completed);
         s.innerHTML = '<h4 style="color:#22c55e">✅ 已完成 ('+done.length+')</h4>' + done.map(t=>taskHTML(t)).join('') +
                       '<h4 style="margin-top:20px;color:#f59e0b">⏳ 待完成 ('+pending.length+')</h4>' + pending.map(t=>taskHTML(t)).join('');
     }
@@ -156,7 +149,8 @@
         if(t.priority==='urgent') tags.push('<span class="tag tag-urgent">⚡</span>');
         if(t.priority==='event') tags.push('<span class="tag tag-event">🎯</span>');
         if(t.completed) tags.push('<span class="tag tag-done">✅</span>');
-        return '<div class="task-card '+pc+'"><input type="checkbox" class="checkbox" '+(t.completed?'checked':'')+' onchange="toggleComplete('+t.id+')"><div class="task-info"><div class="task-title">'+t.title+'</div><div class="task-meta"><span>📅 '+t.date+'</span>'+tags.join('')+'</div>'+(t.detail?'<div style="font-size:0.85rem;opacity:0.7;margin-top:5px">'+t.detail+'</div>':'')+'</div><div class="btn-group"><button class="btn-action btn-edit" onclick="editTask('+t.id+')">✏️</button><button class="btn-action btn-delete" onclick="deleteTask('+t.id+')">🗑️</button></div></div>';
+        const icon = {'albert':'👨','elly':'👩','joann':'👩‍💼'}[t.person];
+        return '<div class="task-card '+pc+'"><input type="checkbox" class="checkbox" '+(t.completed?'checked':'')+' onchange="toggleComplete('+t.id+')"><div class="task-info"><div class="task-title">'+icon+' '+t.title+'</div><div class="task-meta"><span>📅 '+t.date+'</span>'+tags.join('')+'</div>'+(t.detail?'<div style="font-size:0.85rem;opacity:0.7;margin-top:5px">'+t.detail+'</div>':'')+'</div><div class="btn-group"><button class="btn-action btn-edit" onclick="editTask('+t.id+')">✏️</button><button class="btn-action btn-delete" onclick="deleteTask('+t.id+')">🗑️</button></div></div>';
     }
     
     function toggleComplete(id) {
@@ -190,7 +184,6 @@
         const date = document.getElementById('taskDate').value;
         const priority = document.getElementById('taskPriority').value;
         if(!title||!date) { alert('請填寫任務名稱和日期'); return; }
-        
         if(id) {
             const t = tasks.find(x=>x.id==id);
             Object.assign(t,{person,title,detail,date,priority});
@@ -212,9 +205,7 @@
         document.getElementById('taskModal').classList.add('show');
     }
     
-    function deleteTask(id) {
-        if(confirm('確定刪除？')) { tasks=tasks.filter(x=>x.id!==id); saveTasks(); }
-    }
+    function deleteTask(id) { if(confirm('確定刪除？')) { tasks=tasks.filter(x=>x.id!==id); saveTasks(); } }
     
     renderAll();
     </script>
