@@ -6,46 +6,40 @@
     <title>📝 樂點創意報價單系統</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root { --primary: #6366f1; --secondary: #8b5cf6; }
-        body { font-family: 'Microsoft JhengHei', 'Segoe UI', sans-serif; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); min-height: 100vh; color: #fff; }
+        body { font-family: 'Microsoft JhengHei', 'PingFang TC', 'Heiti TC', sans-serif; background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); min-height: 100vh; color: #fff; }
         .header { background: linear-gradient(135deg, var(--primary), var(--secondary)); padding: 20px; text-align: center; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
         .card { background: rgba(255,255,255,0.08); border-radius: 12px; padding: 20px; margin-bottom: 20px; }
         .card h3 { color: #a78bfa; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 15px; }
         .form-label { color: #a78bfa; font-weight: 500; }
-        .form-control, .form-select { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; }
-        .form-control:focus, .form-select:focus { background: rgba(255,255,255,0.15); border-color: var(--primary); color: #fff; }
-        .form-control::placeholder { color: rgba(255,255,255,0.4); }
+        .form-control, .form-select { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: 'Microsoft JhengHei', sans-serif; }
         .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); border: none; }
         .btn-success { background: #10b981; border: none; }
-        .btn-info { background: #06b6d4; border: none; }
-        .item-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; }
-        .item-row input { flex: 1; }
-        .item-row .qty { width: 80px; }
-        .item-row .price { width: 120px; }
+        .item-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; flex-wrap: wrap; }
+        .item-row input, .item-row select { flex: 1; min-width: 100px; }
+        .item-row .qty { width: 70px; flex: none; }
+        .item-row .unit { width: 60px; flex: none; }
+        .item-row .price { width: 100px; flex: none; }
         .item-row .del-btn { background: #ef4444; color: #fff; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; }
-        #preview { background: #fff; color: #000; padding: 40px; min-height: 800px; display: none; }
-        .nav-tabs { border-bottom: 1px solid rgba(255,255,255,0.2); }
         .nav-tabs .nav-link { color: rgba(255,255,255,0.7); border: none; }
         .nav-tabs .nav-link.active { background: transparent; color: #fff; border-bottom: 2px solid var(--primary); }
         .total-section { background: rgba(99,102,241,0.2); padding: 15px; border-radius: 8px; margin-top: 20px; }
-        .total-row { display: flex; justify-content: space-between; padding: 5px 0; font-size: 1.1rem; }
+        .total-row { display: flex; justify-content: space-between; padding: 5px 0; }
         .grand-total { font-size: 1.3rem; font-weight: bold; color: #22c55e; border-top: 2px solid rgba(255,255,255,0.3); padding-top: 10px; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="header">
         <h1>📝 樂點創意報價單系統</h1>
-        <p>快速產製專業報價單 | 支援 Email 及 LINE 發送</p>
+        <p>快速產製專業報價單</p>
     </div>
     <div class="container">
         <ul class="nav nav-tabs mb-3">
             <li class="nav-item"><a class="nav-link active" href="#basic" data-bs-toggle="tab">基本資料</a></li>
             <li class="nav-item"><a class="nav-link" href="#standard" data-bs-toggle="tab">標配項目</a></li>
             <li class="nav-item"><a class="nav-link" href="#optional" data-bs-toggle="tab">選配加購</a></li>
-            <li class="nav-item"><a class="nav-link" href="#preview-tab" data-bs-toggle="tab">預覽產出</a></li>
         </ul>
         <div class="tab-content">
             <!-- 基本資料 -->
@@ -92,15 +86,15 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">聯絡人</label>
-                            <input type="text" class="form-control" id="contactPerson" placeholder="輸入聯絡人姓名">
+                            <input type="text" class="form-control" id="contactPerson" value="何欣樺 Joann Ho">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label">電話</label>
-                            <input type="tel" class="form-control" id="contactPhone" placeholder="輸入電話">
+                            <input type="tel" class="form-control" id="contactPhone" value="0988-956-606">
                         </div>
                         <div class="col-md-12 mb-3">
                             <label class="form-label">Email</label>
-                            <input type="email" class="form-control" id="contactEmail" placeholder="輸入 Email">
+                            <input type="email" class="form-control" id="contactEmail" value="service@funideas.com.tw">
                         </div>
                     </div>
                 </div>
@@ -110,40 +104,11 @@
             <div class="tab-pane fade" id="standard">
                 <div class="card">
                     <h3>✅ 標配項目</h3>
-                    <div id="standardItems">
-                        <div class="item-row">
-                            <input type="text" class="form-control" placeholder="項目名稱" value="專案活動籌辦費">
-                            <input type="number" class="form-control qty" placeholder="數量" value="1">
-                            <input type="text" class="form-control" placeholder="單位" value="式">
-                            <input type="number" class="form-control price" placeholder="單價" value="35000" onchange="calcTotal()">
-                            <button class="del-btn" onclick="this.parentElement.remove();calcTotal()">✕</button>
-                        </div>
-                        <div class="item-row">
-                            <input type="text" class="form-control" placeholder="項目名稱" value="事前會議">
-                            <input type="number" class="form-control qty" placeholder="數量" value="1">
-                            <input type="text" class="form-control" placeholder="單位" value="式">
-                            <input type="number" class="form-control price" placeholder="單價" value="0" onchange="calcTotal()">
-                            <button class="del-btn" onclick="this.parentElement.remove();calcTotal()">✕</button>
-                        </div>
-                        <div class="item-row">
-                            <input type="text" class="form-control" placeholder="項目名稱" value="任務關卡設計">
-                            <input type="number" class="form-control qty" placeholder="數量" value="1">
-                            <input type="text" class="form-control" placeholder="單位" value="式">
-                            <input type="number" class="form-control price" placeholder="單價" value="0" onchange="calcTotal()">
-                            <button class="del-btn" onclick="this.parentElement.remove();calcTotal()">✕</button>
-                        </div>
-                        <div class="item-row">
-                            <input type="text" class="form-control" placeholder="項目名稱" value="活動場地佈置">
-                            <input type="number" class="form-control qty" placeholder="數量" value="1">
-                            <input type="text" class="form-control" placeholder="單位" value="式">
-                            <input type="number" class="form-control price" placeholder="單價" value="0" onchange="calcTotal()">
-                            <button class="del-btn" onclick="this.parentElement.remove();calcTotal()">✕</button>
-                        </div>
-                    </div>
-                    <button class="btn btn-secondary mt-2" onclick="addItem('standardItems')">+ 新增項目</button>
+                    <div id="standardItems"></div>
+                    <button class="btn btn-secondary mt-2" onclick="addStandardItem()">+ 新增項目</button>
                 </div>
                 <div class="total-section">
-                    <div class="total-row"><span>標配小計：</span><span id="standardTotal">NT$ 35,000</span></div>
+                    <div class="total-row"><span>標配小計：</span><span id="standardTotal">NT$ 0</span></div>
                 </div>
                 <div class="d-flex gap-2 mt-3">
                     <button class="btn btn-secondary" onclick="goToTab('basic')">← 上一步</button>
@@ -155,8 +120,8 @@
                 <div class="card">
                     <h3>🎯 選配加購</h3>
                     <div class="mb-3">
-                        <label class="form-label">加購類別</label>
-                        <select class="form-select" id="optionalCategory" onchange="addOptionalItem()">
+                        <label class="form-label">選擇類別新增項目</label>
+                        <select class="form-select" id="optionalCategory" onchange="addOptionalCategory()">
                             <option value="">-- 選擇類別 --</option>
                             <option value="其他任務設計">其他任務設計</option>
                             <option value="影像製作">影像製作</option>
@@ -166,49 +131,90 @@
                             <option value="場地/餐飲/住宿">場地/餐飲/住宿</option>
                         </select>
                     </div>
-                    <div id="optionalItems"></div>
+                    <div id="optionalCategories"></div>
                 </div>
                 <div class="total-section">
-                    <div class="total-row"><span>標配小計：</span><span id="optStandardTotal">NT$ 35,000</span></div>
+                    <div class="total-row"><span>標配小計：</span><span id="optStandardTotal">NT$ 0</span></div>
                     <div class="total-row"><span>選配小計：</span><span id="optionalTotal">NT$ 0</span></div>
-                    <div class="total-row"><span>合計未稅：</span><span id="subtotalNoTax">NT$ 35,000</span></div>
-                    <div class="total-row"><span>稅額 (5%)：</span><span id="taxAmount">NT$ 1,750</span></div>
-                    <div class="total-row grand-total"><span>總價含稅：</span><span id="grandTotal">NT$ 36,750</span></div>
+                    <div class="total-row"><span>合計未稅：</span><span id="subtotalNoTax">NT$ 0</span></div>
+                    <div class="total-row"><span>稅額 (5%)：</span><span id="taxAmount">NT$ 0</span></div>
+                    <div class="total-row grand-total"><span>總價含稅：</span><span id="grandTotal">NT$ 0</span></div>
                 </div>
                 <div class="d-flex gap-2 mt-3">
                     <button class="btn btn-secondary" onclick="goToTab('standard')">← 上一步</button>
                     <button class="btn btn-success" onclick="generatePDF()">📄 產生 PDF</button>
-                    <button class="btn btn-info" onclick="showSendOptions()">📤 發送選項</button>
                 </div>
-            </div>
-            <!-- 預覽 -->
-            <div class="tab-pane fade" id="preview-tab">
-                <div class="card">
-                    <h3>📄 預覽報價單</h3>
-                    <div id="preview"></div>
-                </div>
-            </div>
-        </div>
-        <!-- 發送選項 Modal -->
-        <div class="modal" id="sendModal">
-            <div class="modal-content" style="background:#1e293b;padding:25px;border-radius:16px;max-width:400px;">
-                <h4>📤 發送報價單</h4>
-                <div class="mb-3">
-                    <label class="form-label">客戶 Email</label>
-                    <input type="email" class="form-control" id="sendEmail" placeholder="輸入客戶 Email">
-                </div>
-                <button class="btn btn-primary w-100 mb-2" onclick="sendViaEmail()">📧 發送 Email</button>
-                <button class="btn btn-success w-100 mb-2" onclick="sendToLINE()">💬 發送到 LINE</button>
-                <button class="btn btn-secondary w-100" onclick="document.getElementById('sendModal').style.display='none'">取消</button>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-    // 初始化日期
+    // 初始化預設資料
+    const defaultStandardItems = [
+        {name:'專案活動籌辦費', qty:1, unit:'式', price:35000},
+        {name:'事前會議', qty:1, unit:'式', price:0},
+        {name:'任務關卡設計', qty:1, unit:'式', price:0},
+        {name:'活動場地佈置 (含進撤場作業)', qty:1, unit:'式', price:0},
+        {name:'謎走大富翁包含：1.城市任務-5關(智力解謎) 2.農田任務-7關(體力闖關)', qty:1, unit:'式', price:0},
+        {name:'照片回顧：現場製作PPT', qty:1, unit:'式', price:0},
+        {name:'活動紀錄照片：提供雲端連結', qty:1, unit:'式', price:0},
+        {name:'活動中文主持人', qty:1, unit:'人', price:0},
+        {name:'工作團隊：視需求安排對應人數', qty:10, unit:'人', price:0},
+        {name:'平面攝影師：靜態攝影', qty:1, unit:'人', price:0},
+        {name:'道具運輸費：新竹以北', qty:1, unit:'式', price:0},
+        {name:'差旅費：新竹以北', qty:1, unit:'式', price:0},
+    ];
+    
+    const optionalCategories = {
+        '其他任務設計': [
+            {name:'菁英挑戰賽(共8題)：排版、印製、分裝', qty:0, unit:'式', price:8000},
+            {name:'城市任務-隔離病棟(需20人獨立空間)', qty:0, unit:'組', price:8000},
+            {name:'農田任務-客製記憶翻牌：18款圖設計輸出', qty:0, unit:'組', price:5000},
+            {name:'客製地圖：120x90cm(含設計及輸出)', qty:0, unit:'張', price:5000},
+        ],
+        '影像製作': [
+            {name:'平面攝影師：靜態攝影', qty:0, unit:'半日', price:8000},
+            {name:'動態攝影師：動態錄影', qty:0, unit:'半日', price:8000},
+            {name:'空拍錄影 DJI Mavic 4K', qty:0, unit:'式', price:8000},
+            {name:'活動紀錄影片後製：純素材加轉場特效', qty:0, unit:'部', price:12000},
+        ],
+        '視覺設計輸出': [
+            {name:'主視覺設計：客製電子檔', qty:0, unit:'式', price:10000},
+            {name:'主視覺輸出：帆布(500x300cm)及Truss搭建', qty:0, unit:'式', price:28000},
+            {name:'活動布條：480x60cm(含設計及輸出)', qty:0, unit:'條', price:2000},
+            {name:'迎賓H展架：172x60cm(含設計及輸出)', qty:0, unit:'組', price:3000},
+        ],
+        '硬體設備': [
+            {name:'音響設備：專業PA設備，含1位音控師', qty:0, unit:'式', price:30000},
+            {name:'燈光設備：專業燈光，舞台區照明特效', qty:0, unit:'式', price:30000},
+            {name:'投影設備：150吋投影幕', qty:0, unit:'組', price:8000},
+            {name:'舞台結構：540(W)x270(D)x60(H)cm', qty:0, unit:'式', price:10000},
+        ],
+        '其他': [
+            {name:'雙語主持人：中文+英文(半日計價)', qty:0, unit:'人', price:30000},
+            {name:'1日保險：承保24小時', qty:0, unit:'人', price:50},
+            {name:'保險：公共意外險預估', qty:0, unit:'式', price:15000},
+            {name:'交通：遊覽車43人座1日包車', qty:0, unit:'台', price:16000},
+            {name:'專業醫護站：含1位護理師及護理包', qty:0, unit:'半日', price:5000},
+        ],
+        '場地/餐飲/住宿': [
+            {name:'飲用水', qty:0, unit:'箱', price:480},
+            {name:'場地費用', qty:0, unit:'時段', price:0},
+            {name:'餐飲費用', qty:0, unit:'人', price:0},
+            {name:'住宿：雙人房', qty:0, unit:'間', price:0},
+            {name:'代辦服務費', qty:0, unit:'式', price:0},
+        ]
+    };
+    
+    // 初始化
     document.getElementById('quoteDate').valueAsDate = new Date();
     const validDate = new Date();
     validDate.setDate(validDate.getDate() + 14);
     document.getElementById('validDate').valueAsDate = validDate;
+    
+    // 初始化標配項目
+    defaultStandardItems.forEach(item => addStandardItem(item.name, item.qty, item.unit, item.price));
+    calcTotal();
     
     function goToTab(tabId) {
         document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
@@ -218,23 +224,53 @@
         if(tabId === 'optional') calcTotal();
     }
     
-    function addItem(containerId) {
-        const container = document.getElementById(containerId);
+    function addStandardItem(name='', qty=1, unit='式', price=0) {
+        const container = document.getElementById('standardItems');
         const div = document.createElement('div');
         div.className = 'item-row';
-        div.innerHTML = '<input type="text" class="form-control" placeholder="項目名稱"><input type="number" class="form-control qty" placeholder="數量" value="1"><input type="text" class="form-control" placeholder="單位" value="式"><input type="number" class="form-control price" placeholder="單價" value="0" onchange="calcTotal()"><button class="del-btn" onclick="this.parentElement.remove();calcTotal()">✕</button>';
+        div.innerHTML = `
+            <input type="text" class="form-control" placeholder="項目名稱" value="${name}">
+            <input type="number" class="form-control qty" placeholder="數量" value="${qty}" onchange="calcTotal()">
+            <input type="text" class="form-control unit" placeholder="單位" value="${unit}">
+            <input type="number" class="form-control price" placeholder="單價" value="${price}" onchange="calcTotal()">
+            <button class="del-btn" onclick="this.parentElement.remove();calcTotal()">✕</button>
+        `;
         container.appendChild(div);
     }
     
-    function addOptionalItem() {
+    function addOptionalCategory() {
         const cat = document.getElementById('optionalCategory').value;
         if(!cat) return;
-        const container = document.getElementById('optionalItems');
+        
+        const container = document.getElementById('optionalCategories');
+        const catDiv = document.createElement('div');
+        catDiv.className = 'card';
+        catDiv.innerHTML = `<h4>${cat}</h4><div id="cat-${cat}"></div>`;
+        container.appendChild(catDiv);
+        
+        const itemsContainer = catDiv.querySelector(`#cat-${cat}`);
+        if(optionalCategories[cat]) {
+            optionalCategories[cat].forEach(item => {
+                addOptionalItem(cat, item.name, item.qty, item.unit, item.price);
+            });
+        }
+        document.getElementById('optionalCategory').value = '';
+        calcTotal();
+    }
+    
+    function addOptionalItem(cat, name='', qty=0, unit='式', price=0) {
+        const container = document.getElementById(`cat-${cat}`);
+        if(!container) return;
         const div = document.createElement('div');
         div.className = 'item-row';
-        div.innerHTML = `<span style="width:150px;color:#a78bfa">${cat}</span><input type="text" class="form-control" placeholder="項目名稱"><input type="number" class="form-control qty" placeholder="數量" value="0"><input type="text" class="form-control" placeholder="單位"><input type="number" class="form-control price" placeholder="單價" value="0" onchange="calcTotal()"><button class="del-btn" onclick="this.parentElement.remove();calcTotal()">✕</button>`;
+        div.innerHTML = `
+            <input type="text" class="form-control" placeholder="項目名稱" value="${name}">
+            <input type="number" class="form-control qty" placeholder="數量" value="${qty}" onchange="calcTotal()">
+            <input type="text" class="form-control unit" placeholder="單位" value="${unit}">
+            <input type="number" class="form-control price" placeholder="單價" value="${price}" onchange="calcTotal()">
+            <button class="del-btn" onclick="this.parentElement.remove();calcTotal()">✕</button>
+        `;
         container.appendChild(div);
-        document.getElementById('optionalCategory').value = '';
     }
     
     function calcTotal() {
@@ -248,7 +284,7 @@
         document.getElementById('optStandardTotal').textContent = 'NT$ ' + standardTotal.toLocaleString();
         
         let optionalTotal = 0;
-        document.querySelectorAll('#optionalItems .item-row').forEach(row => {
+        document.querySelectorAll('#optionalCategories .item-row').forEach(row => {
             const qty = parseFloat(row.querySelector('.qty').value) || 0;
             const price = parseFloat(row.querySelector('.price').value) || 0;
             optionalTotal += qty * price;
@@ -266,121 +302,175 @@
         return {standardTotal, optionalTotal, subtotal, tax, grandTotal};
     }
     
-    function generatePDF() {
+    async function generatePDF() {
         const {jsPDF} = window.jspdf;
-        const doc = new jsPDF();
+        
+        // 使用 Unicode 字體
+        doc = new jsPDF({
+            orientation: 'portrait',
+            unit: 'mm',
+            format: 'a4'
+        });
+        
+        // 設定中文字體 - 使用內建字體
+        doc.setFont('helvetica');
+        doc.setFontSize(10);
+        
+        const clientName = document.getElementById('clientName').value || '客戶名稱';
+        const eventName = document.getElementById('eventName').value || '主題名稱';
+        const quoteDate = document.getElementById('quoteDate').value;
+        const validDate = document.getElementById('validDate').value;
+        const eventDate = document.getElementById('eventDate').value;
+        const location = document.getElementById('location').value || '';
         const totals = calcTotal();
         
         // 標題
         doc.setFontSize(18);
-        doc.text('樂點創意企業活動專案報價單', 105, 20, {align: 'center'});
+        doc.text('樂點創意企業活動專案報價單', 105, 15, {align: 'center'});
         
-        doc.setFontSize(12);
-        doc.text('客戶名稱：' + document.getElementById('clientName').value, 20, 35);
-        doc.text('報價日期：' + document.getElementById('quoteDate').value, 120, 35);
-        doc.text('活動名稱：' + document.getElementById('eventName').value, 20, 45);
-        doc.text('報價效期：' + document.getElementById('validDate').value, 120, 45);
-        doc.text('活動地點：' + document.getElementById('location').value, 20, 55);
-        doc.text('活動日期：' + document.getElementById('eventDate').value, 120, 55);
+        doc.setFontSize(11);
+        doc.text('異品科技股份有限公司', 105, 22, {align: 'center'});
+        
+        // 基本資料
+        doc.setFontSize(10);
+        doc.text(`客戶名稱：${clientName}`, 15, 35);
+        doc.text(`報價日期：${quoteDate}`, 130, 35);
+        doc.text(`活動名稱：${eventName}`, 15, 43);
+        doc.text(`報價效期：${validDate}`, 130, 43);
+        doc.text(`活動地點：${location}`, 15, 51);
+        doc.text(`活動日期：${eventDate}`, 130, 51);
+        
+        // 表格標題
+        let y = 62;
+        doc.setFillColor(99, 102, 241);
+        doc.rect(15, y-5, 180, 8, 'F');
+        doc.setTextColor(255, 255, 255);
+        doc.setFontSize(10);
+        doc.text('項目', 17, y);
+        doc.text('內容', 50, y);
+        doc.text('數量', 130, y);
+        doc.text('單位', 145, y);
+        doc.text('單價', 160, y);
+        doc.text('總價', 182, y);
+        
+        y += 8;
+        doc.setTextColor(0, 0, 0);
         
         // 標配項目
-        doc.setFontSize(14);
-        doc.text('標配項目', 20, 70);
-        doc.line(20, 72, 190, 72);
-        
-        let y = 80;
-        doc.setFontSize(10);
-        doc.text('項目', 20, y);
-        doc.text('數量', 110, y);
-        doc.text('單位', 135, y);
-        doc.text('單價', 155, y);
-        doc.text('總價', 180, y);
-        y += 8;
-        
+        doc.setFontSize(9);
+        let itemNum = 1;
         document.querySelectorAll('#standardItems .item-row').forEach(row => {
             const name = row.querySelector('input:first-child').value;
             const qty = row.querySelector('.qty').value;
-            const unit = row.querySelector('input:nth-child(3)').value;
-            const price = row.querySelector('.price').value;
-            const total = (parseFloat(qty) || 0) * (parseFloat(price) || 0);
-            doc.text(name.substring(0, 35), 20, y);
-            doc.text(qty, 110, y);
-            doc.text(unit, 135, y);
-            doc.text(parseInt(price).toLocaleString(), 155, y);
-            doc.text(total.toLocaleString(), 180, y);
-            y += 7;
+            const unit = row.querySelector('.unit').value;
+            const price = parseFloat(row.querySelector('.price').value) || 0;
+            const total = qty * price;
+            
+            if(y > 250) {
+                doc.addPage();
+                y = 20;
+            }
+            
+            doc.text(String(itemNum), 17, y);
+            doc.text(name.substring(0, 40), 25, y);
+            doc.text(String(qty), 132, y);
+            doc.text(unit, 147, y);
+            doc.text(price.toLocaleString(), 162, y);
+            doc.text(total.toLocaleString(), 182, y);
+            
+            y += 6;
+            itemNum++;
         });
         
         // 選配項目
-        y += 10;
-        doc.setFontSize(14);
-        doc.text('選配加購', 20, y);
-        doc.line(20, y+2, 190, y+2);
-        y += 10;
-        
+        y += 5;
         doc.setFontSize(10);
-        document.querySelectorAll('#optionalItems .item-row').forEach(row => {
-            const name = row.querySelector('input:nth-child(2)').value;
-            const qty = row.querySelector('.qty').value;
-            const unit = row.querySelector('input:nth-child(3)').value;
-            const price = row.querySelector('.price').value;
-            const total = (parseFloat(qty) || 0) * (parseFloat(price) || 0);
-            if(name) {
-                doc.text(name.substring(0, 35), 20, y);
-                doc.text(qty, 110, y);
-                doc.text(unit, 135, y);
-                doc.text(parseInt(price).toLocaleString(), 155, y);
-                doc.text(total.toLocaleString(), 180, y);
-                y += 7;
-            }
+        doc.setFont(undefined, 'bold');
+        doc.text('選配加購', 15, y);
+        doc.setFont(undefined, 'normal');
+        y += 5;
+        
+        document.querySelectorAll('#optionalCategories').forEach(catDiv => {
+            const catTitle = catDiv.querySelector('h4').textContent;
+            if(y > 250) { doc.addPage(); y = 20; }
+            
+            doc.setFontSize(9);
+            doc.setFont(undefined, 'bold');
+            doc.text(catTitle, 15, y);
+            doc.setFont(undefined, 'normal');
+            y += 5;
+            
+            catDiv.querySelectorAll('.item-row').forEach(row => {
+                const name = row.querySelector('input:first-child').value;
+                const qty = parseFloat(row.querySelector('.qty').value) || 0;
+                const unit = row.querySelector('.unit').value;
+                const price = parseFloat(row.querySelector('.price').value) || 0;
+                const total = qty * price;
+                
+                if(qty > 0) {
+                    if(y > 250) { doc.addPage(); y = 20; }
+                    doc.text(name.substring(0, 40), 20, y);
+                    doc.text(String(qty), 132, y);
+                    doc.text(unit, 147, y);
+                    doc.text(price.toLocaleString(), 162, y);
+                    doc.text(total.toLocaleString(), 182, y);
+                    y += 6;
+                }
+            });
+            y += 3;
         });
         
         // 總計
-        y += 10;
-        doc.text('合計未稅：' + totals.subtotal.toLocaleString() + ' 元', 140, y);
-        y += 7;
-        doc.text('稅額 (5%)：' + totals.tax.toLocaleString() + ' 元', 140, y);
-        y += 7;
+        y += 5;
+        doc.setFontSize(10);
+        doc.text(`合計未稅：${totals.subtotal.toLocaleString()} 元`, 140, y);
+        y += 5;
+        doc.text(`稅額 (5%)：${totals.tax.toLocaleString()} 元`, 140, y);
+        y += 5;
         doc.setFontSize(12);
-        doc.text('總價含稅：' + totals.grandTotal.toLocaleString() + ' 元', 140, y);
+        doc.setFont(undefined, 'bold');
+        doc.text(`總價含稅：${totals.grandTotal.toLocaleString()} 元`, 140, y);
         
         // 客戶確認欄
-        y += 20;
-        doc.setFontSize(12);
-        doc.text('客戶確認欄', 20, y);
-        doc.line(20, y+2, 190, y+2);
+        y += 15;
+        doc.setFontSize(11);
+        doc.text('客戶確認欄', 15, y);
+        doc.line(15, y+2, 195, y+2);
+        y += 8;
+        
+        doc.setFontSize(9);
+        doc.setFont(undefined, 'normal');
+        const companyName = document.getElementById('companyName').value;
+        const taxId = document.getElementById('taxId').value;
+        const contactPerson = document.getElementById('contactPerson').value;
+        const contactPhone = document.getElementById('contactPhone').value;
+        const contactEmail = document.getElementById('contactEmail').value;
+        
+        doc.text(`公司名稱：${companyName}`, 15, y);
+        doc.text(`統一編號：${taxId}`, 120, y);
+        y += 6;
+        doc.text(`聯絡人：${contactPerson}`, 15, y);
+        doc.text(`電話：${contactPhone}`, 120, y);
+        y += 6;
+        doc.text(`Email：${contactEmail}`, 15, y);
+        
+        // 匯款資訊
         y += 10;
-        doc.setFontSize(10);
-        doc.text('公司名稱：' + document.getElementById('companyName').value, 20, y);
-        doc.text('統一編號：' + document.getElementById('taxId').value, 120, y);
-        y += 7;
-        doc.text('聯絡人：' + document.getElementById('contactPerson').value, 20, y);
-        doc.text('電話：' + document.getElementById('contactPhone').value, 120, y);
-        y += 7;
-        doc.text('Email：' + document.getElementById('contactEmail').value, 20, y);
+        doc.text('匯款資訊', 15, y);
+        doc.line(15, y+2, 195, y+2);
+        y += 8;
+        doc.text('戶名：異品科技股份有限公司', 15, y);
+        y += 6;
+        doc.text('銀行：808-0185 玉山銀行 桃園分行', 15, y);
+        y += 6;
+        doc.text('帳號：0185440011887', 15, y);
         
         // 儲存
-        const fileName = '報價單_' + document.getElementById('clientName').value + '_' + document.getElementById('eventName').value + '.pdf';
+        const fileName = `報價單_${clientName}_${eventName}.pdf`;
         doc.save(fileName);
         
         alert('PDF 已產生：' + fileName);
     }
-    
-    function showSendOptions() {
-        document.getElementById('sendModal').style.display = 'flex';
-    }
-    
-    function sendViaEmail() {
-        const email = document.getElementById('sendEmail').value;
-        if(!email) { alert('請輸入 Email'); return; }
-        alert('Email 發送功能需要設定 SMTP，請先產生 PDF 後手動發送！\n\nEmail: ' + email);
-    }
-    
-    function sendToLINE() {
-        alert('LINE 發送功能需要 LINE Bot API 設定，請先產生 PDF！');
-    }
-    
-    calcTotal();
     </script>
 </body>
 </html>
