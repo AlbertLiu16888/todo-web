@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <title>報價單預覽</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans TC', 'Microsoft JhengHei', sans-serif; }
+        .page { width: 210mm; min-height: 297mm; padding: 15mm; margin: 0 auto; background: #fff; }
+        .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 15px; }
+        .header h1 { font-size: 22px; font-weight: bold; }
+        .header p { font-size: 12px; color: #666; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 15px; font-size: 11px; }
+        .info-grid .label { font-weight: bold; color: #333; }
+        table { width: 100%; border-collapse: collapse; font-size: 9px; margin-bottom: 10px; }
+        th, td { border: 1px solid #ccc; padding: 4px 6px; text-align: left; }
+        th { background: #f0f0f0; }
+        .section-title { background: #f5f5f5; font-weight: bold; padding: 5px; margin: 10px 0 5px; }
+        .total-section { text-align: right; font-size: 11px; margin-top: 10px; }
+        .total-row { display: flex; justify-content: flex-end; gap: 30px; padding: 3px 0; }
+        .grand-total { font-size: 14px; font-weight: bold; color: #2e7d32; }
+        .footer { margin-top: 20px; font-size: 9px; }
+        .footer h4 { margin-bottom: 5px; }
+        .bank-info { margin-top: 10px; font-size: 9px; }
+    </style>
+</head>
+<body>
+    <div id="quote-preview" class="page">
+        <div class="header">
+            <h1>★ 公版 - 樂點創意報價單 - 2026年3月12日 - 客戶名稱 - 主題名稱 ★</h1>
+            <p>異品科技股份有限公司 樂點創意企業活動專案報價單</p>
+        </div>
+        
+        <div class="info-grid">
+            <div><span class="label">客戶名稱：</span>客戶名稱</div>
+            <div><span class="label">報價日期：</span>2026年3月12日</div>
+            <div><span class="label">活動名稱：</span>實境體驗課程主題：謎走大富翁</div>
+            <div><span class="label">報價效期：</span>2026年3月26日</div>
+            <div><span class="label">活動地點：</span>活動地點</div>
+            <div><span class="label">活動日期：</span>2026年00月00日</div>
+        </div>
+        
+        <table>
+            <tr>
+                <th style="width:30px">項</th>
+                <th>內 容</th>
+                <th style="width:40px">數量</th>
+                <th style="width:40px">單位</th>
+                <th style="width:60px">單價</th>
+                <th style="width:60px">總價</th>
+            </tr>
+            <tr><td colspan="6" class="section-title">標配項目</td></tr>
+            <tr><td>1</td><td>專案活動籌辦費</td><td>1</td><td>式</td><td>35,000</td><td>35,000</td></tr>
+            <tr><td>2</td><td>事前會議</td><td>1</td><td>式</td><td></td><td></td></tr>
+            <tr><td>3</td><td>任務關卡設計</td><td>1</td><td>式</td><td></td><td></td></tr>
+            <tr><td>4</td><td>活動場地佈置(含進撤場作業)</td><td>1</td><td>式</td><td></td><td></td></tr>
+            <tr><td>5</td><td>謎走大富翁包含：1.城市任務-5關(智力解謎) 2.農田任務-7關(體力闖關)</td><td>1</td><td>式</td><td></td><td></td></tr>
+            <tr><td>6</td><td>照片回顧：現場製作PPT</td><td>1</td><td>式</td><td></td><td></td></tr>
+            <tr><td>7</td><td>活動紀錄照片：提供雲端連結</td><td>1</td><td>式</td><td></td><td></td></tr>
+            <tr><td>8</td><td>活動中文主持人：1位</td><td>1</td><td>人</td><td></td><td></td></tr>
+            <tr><td>9</td><td>工作團隊：視需求安排對應人數</td><td>10</td><td>人</td><td></td><td></td></tr>
+            <tr><td>10</td><td>平面攝影師：靜態攝影</td><td>1</td><td>機</td><td></td><td></td></tr>
+            <tr><td>11</td><td>道具運輸費：新竹以北</td><td>1</td><td>式</td><td></td><td></td></tr>
+            <tr><td>12</td><td>差旅費：新竹以北</td><td>1</td><td>式</td><td></td><td></td></tr>
+            <tr><td colspan="6" class="section-title">選配加購：其他任務設計</td></tr>
+            <tr><td>1</td><td>菁英挑戰賽(共8題)</td><td>0</td><td>式</td><td>8,000</td><td>0</td></tr>
+        </table>
+        
+        <div class="total-section">
+            <div class="total-row"><span>合計未稅：</span><span>35,000</span></div>
+            <div class="total-row"><span>稅額 (5%)：</span><span>1,750</span></div>
+            <div class="total-row grand-total"><span>總價含稅：</span><span>36,750</span></div>
+        </div>
+        
+        <div class="footer">
+            <h4>報價備註說明</h4>
+            <ol>
+                <li>活動整體專案費 36,750 元整 (含稅)</li>
+                <li>預定訂金金額：11,025 元整</li>
+                <li>尾款支付日期：活動結束後14個工作天內付清</li>
+            </ol>
+            
+            <div class="bank-info">
+                <h4>客戶確認欄</h4>
+                <p>公司名稱：異品科技股份有限公司 | 統一編號：16356300</p>
+                <p>聯絡人：何欣樺 Joann Ho | 電話：0988-956-606</p>
+                <p>Email：service@funideas.com.tw | 地址：桃園市中壢區永能路23巷2號</p>
+                <h4>匯款資訊</h4>
+                <p>戶名：異品科技股份有限公司 | 銀行：808-0185 玉山銀行 桃園分行</p>
+                <p>帳號：0185440011887</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    async function generatePDF() {
+        const element = document.getElementById('quote-preview');
+        const canvas = await html2canvas(element, { scale: 2 });
+        const imgData = canvas.toDataURL('image/png');
+        
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        
+        const imgWidth = 210;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        
+        pdf.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+        pdf.save('報價單.pdf');
+    }
+    </script>
+</body>
+</html>
