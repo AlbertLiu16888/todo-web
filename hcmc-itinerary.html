@@ -2,125 +2,182 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <title>胡志明市 5 日行程 (2026/3/14-3/18)</title>
+  <title>胡志明市 3/14-3/18 行程（含航班、按讚回饋）</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
-    :root {
-      font-family: "Noto Sans TC", "Segoe UI", sans-serif;
-      background: #f6f7fb;
-      color: #0f172a;
-    }
-    body {
-      margin: 0;
-      line-height: 1.6;
-      background: linear-gradient(180deg, #fdfbff 0%, #f4f6fb 35%, #ffffff 100%);
-      color: #0e1325;
-    }
-    header {
-      background: linear-gradient(135deg, #f97316, #facc15, #7c3aed);
-      color: #fff;
-      padding: 32px 24px;
-      text-align: center;
-    }
-    header h1 { margin: 0; font-size: clamp(1.7rem, 4vw, 2.8rem); }
-    header p { margin: 6px 0 0; opacity: .9; }
-    .container { width: min(1200px, 92vw); margin: 0 auto; padding: 32px 0 80px; }
-    .tips, .planner, .day-card, .cloud-panel { background: #fff; border-radius: 18px; padding: 20px; margin-bottom: 24px; box-shadow: 0 18px 40px rgba(15,23,42,.08); }
-    .tips h2, .planner h2, .cloud-panel h2 { margin-top: 0; }
-    .tips ul { padding-left: 20px; }
-    .day-card h3 { margin-top: 0; font-size: 1.25rem; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+    :root { font-family: "Noto Sans TC","Segoe UI",sans-serif; background:#f8fafc; color:#0f172a; }
+    body { margin:0; line-height:1.6; background:linear-gradient(180deg,#fdfbff 0%,#f4f6fb 35%,#ffffff 100%); }
+    header { background:linear-gradient(135deg,#0ea5e9,#7c3aed,#f97316); color:#fff; text-align:center; padding:32px 24px; }
+    header h1 { margin:0; font-size:clamp(1.7rem,4vw,2.8rem); }
+    header p { margin:6px 0 0; opacity:.9; }
+    .container { width:min(1200px,92vw); margin:0 auto; padding:32px 0 80px; }
+    .tips,.planner,.day-card,.cloud-panel,.gallery { background:#fff; border-radius:18px; padding:20px; margin-bottom:24px; box-shadow:0 18px 40px rgba(15,23,42,.08); }
+    .tips h2,.planner h2,.cloud-panel h2,.gallery h2 { margin-top:0; }
+    .tips ul { padding-left:20px; }
+    .day-card { position:relative; }
+    .day-card h3 { margin:0 0 12px; font-size:1.2rem; display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
     .like-btn { border:none; background:#f1f5f9; color:#0f172a; border-radius:999px; padding:6px 12px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; }
-    .like-btn.liked { background:#7c3aed; color:#fff; }
-    .like-btn span { font-weight:700; }
-    .schedule { list-style:none; padding:0; margin:14px 0 0; border-left:3px solid #f97316; }
-    .schedule li { margin:0 0 14px 14px; padding-left:12px; position:relative; }
-    .schedule li::before { content:''; position:absolute; left:-19px; top:6px; width:10px; height:10px; border-radius:50%; background:#f97316; }
-    .schedule time { font-weight:700; color:#7c3aed; margin-right:6px; }
+    .like-btn.liked,.mini-like-btn.liked { background:#7c3aed; color:#fff; }
+    .schedule { list-style:none; margin:0; padding:0 0 0 12px; border-left:3px solid rgba(249,115,22,.4); }
+    .schedule li { position:relative; margin:0 0 16px 12px; padding:12px 12px 12px 0; border-bottom:1px solid rgba(148,163,184,.3); display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .schedule li:last-child { border-bottom:none; }
+    .schedule li::before { content:''; position:absolute; left:-18px; top:18px; width:10px; height:10px; border-radius:50%; background:#f97316; }
+    .item-body { flex:1; min-width:220px; }
+    .item-body time { font-weight:700; color:#7c3aed; margin-right:6px; }
+    .tag { background:#0ea5e91a; color:#0f172a; font-size:.78rem; padding:2px 8px; border-radius:999px; margin-left:6px; }
+    .free-slot { background:#ecfccb; border-radius:10px; padding:8px 10px; display:inline-block; margin-top:6px; }
+    .mini-like-btn { border:1px solid rgba(148,163,184,.5); background:#fff; color:#0f172a; border-radius:999px; padding:4px 10px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:4px; height:32px; }
     .image-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin:14px 0; }
     figure { margin:0; background:#f1f5f9; border-radius:12px; overflow:hidden; border:1px solid rgba(15,23,42,.08); }
     figure img { width:100%; height:140px; object-fit:cover; display:block; }
     figure figcaption { font-size:.85rem; padding:6px 10px 10px; color:#475569; }
-    .planner form, .cloud-panel form { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
-    label { font-weight:600; font-size:.9rem; }
-    input, textarea, select, button { font:inherit; border-radius:10px; border:1px solid #cbd5f5; padding:10px 12px; width:100%; box-sizing:border-box; }
+    .planner form,.cloud-panel form { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+    input,textarea,button { font:inherit; border-radius:10px; border:1px solid #cbd5f5; padding:10px 12px; }
     textarea { min-height:100px; }
-    button { background:linear-gradient(120deg,#7c3aed,#f97316); color:#fff; border:none; cursor:pointer; font-weight:600; transition:opacity .2s ease; }
+    button { cursor:pointer; font-weight:600; background:linear-gradient(120deg,#7c3aed,#f97316); color:#fff; border:none; }
     button:hover { opacity:.9; }
-    .planner button, .cloud-panel button { width:100%; }
     .board { margin-top:24px; border-top:1px solid rgba(15,23,42,.08); padding-top:18px; }
-    .board-item { display:grid; grid-template-columns:140px 90px 1fr auto; gap:10px; align-items:center; padding:10px; border-radius:12px; border:1px solid rgba(148,163,184,.6); margin-bottom:8px; background:#f8fafc; }
-    .board-item small { color:#475569; }
+    .board-item { display:grid; grid-template-columns:140px 90px 1fr auto; gap:10px; align-items:center; padding:10px; border-radius:12px; border:1px solid rgba(148,163,184,.6); background:#f8fafc; margin-bottom:8px; }
     .board-item button { padding:6px 10px; font-size:.85rem; margin-left:6px; background:#0ea5e9; }
     .board-item button.delete { background:#ef4444; }
-    .cloud-panel small { color:#475569; display:block; margin-top:4px; }
-    #sync-status { margin-top:12px; font-weight:600; }
-    @media (max-width:640px){ .board-item { grid-template-columns:1fr; } }
+    .gallery ul { list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:10px; }
+    .gallery li { background:#f8fafc; border-radius:12px; padding:12px; border:1px solid rgba(148,163,184,.4); }
+    .gallery a { color:#2563eb; font-weight:600; text-decoration:none; }
+    @media (max-width:640px){ .board-item { grid-template-columns:1fr; } .schedule li { flex-direction:column; } }
   </style>
 </head>
 <body>
   <header>
-    <h1>胡志明市 District 1 旅行提案 · 2026/3/14-3/18</h1>
-    <p>住址：4B Thi Sach, Bến Nghé Ward · 主要交通：Grab</p>
-    <p style="margin-top:8px;font-size:.95rem;opacity:.85;">支援 GitHub 雲端儲存、互動行程板與每日點讚回饋</p>
+    <h1>胡志明市行程 · 2026/3/14 (Sat) → 3/18 (Wed)</h1>
+    <p>航班：長榮 BR395 (TPE 09:10 → SGN 11:40)、BR396 (SGN 15:10 → TPE 19:35) – 當地時間為台灣 -1 小時</p>
   </header>
   <div class="container">
     <section class="tips">
-      <h2>快訊 & 建議</h2>
+      <h2>行前重點</h2>
       <ul>
-        <li><strong>Grab</strong>：機場→飯店 ₫200k-280k；市區短程 ₫40k-90k（可綁定 OnePay）。</li>
-        <li><strong>換匯</strong>：帶美金於機場或 Bến Thành 市場金店換匯；多數酒吧/飯店支援 VISA/Master。</li>
-        <li><strong>Dress code</strong>：Chill Skybar / Social Club 需 smart casual；帶薄外套因屋頂風大。</li>
-        <li><strong>小費</strong>：Spa ₫30k-50k、河船服務費如未含 5-10%。</li>
-        <li><strong>共享預約</strong>：此頁可登入 GitHub Token 後，將行程/點讚同步到 repo `data/hcmc-plan.json`，方便團隊共同維護。</li>
+        <li>到機場：建議 3/14 06:30 抵達桃園 T2，預辦通關＋長榮貴賓室早餐。</li>
+        <li>交通：Grab 為主，記得輸入地址「4B Thi Sach, Ben Nghe, D1」。</li>
+        <li>匯率：建議帶現金到濱城市場周邊換，或用 ATM + 國泰世華。</li>
+        <li>每日安排皆保留 ≥2hr 自由時間，可用於飯店泳池、按摩或臨時想去的咖啡店。</li>
+        <li>GitHub 雲端同步：輸入 PAT 後，可把行程與按讚數寫回 `data/hcmc-plan.json`，方便團隊協作。</li>
       </ul>
     </section>
 
+    <!-- Day Cards -->
     <section class="day-card" data-like-id="day1">
-      <h3>Day 1 · 3/14 Fri — 歌劇院周邊 & Rooftop 夜景 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
+      <h3>Day 1 · 3/14 Sat — 出發 / 抵達 & Rooftop 夜景 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
       <div class="image-grid">
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Saigon_Opera_House_2016.jpg" alt="Saigon Opera House" />
-          <figcaption>西貢歌劇院（Saigon Opera House）</figcaption>
+          <figcaption>西貢歌劇院 (Saigon Opera House)</figcaption>
         </figure>
         <figure>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Nguyen_Hue_Walking_Street.jpg" alt="Nguyen Hue Walking Street" />
-          <figcaption>阮惠步行街傍晚散步</figcaption>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/8/8c/Nguyen_Hue_Walking_Street.jpg" alt="Nguyen Hue" />
+          <figcaption>阮惠步行街晚景</figcaption>
         </figure>
       </div>
       <ul class="schedule">
-        <li><time>09:30</time>Grab 接機→4B Thi Sach Check-in（步行 5 分鐘到歌劇院 & Vincom Center）</li>
-        <li><time>12:30</time>午餐：<strong>Xu Restaurant & Lounge</strong></li>
-        <li><time>14:30</time>咖啡：<strong>L’Usine Dong Khoi</strong> 或 <strong>Sorae Café</strong></li>
-        <li><time>17:30</time>晚餐：<strong>Secret Garden Rooftop</strong></li>
-        <li><time>20:00</time>阮惠步行街＋統一宮夜景</li>
-        <li><time>21:30</time>酒吧：<strong>Social Club Rooftop</strong></li>
+        <li data-event-id="d1-flight">
+          <div class="item-body">
+            <time>06:30</time>桃園機場 T2 報到｜<span class="tag">航班 BR395</span>
+            <div>09:10 起飛 → 11:40 抵達胡志明市（ETA 11:40，入境+領行李約 40 分鐘）。</div>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d1-arrival">
+          <div class="item-body">
+            <time>13:30</time>Check-in 4B Thi Sach｜<span class="tag">飯店</span>
+            <div>Grab 約 ₫250k；放行李後可步行至歌劇院 / Vincom Center。</div>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d1-lunch">
+          <div class="item-body">
+            <time>14:00</time>午餐：Xu Restaurant & Lounge
+            <div>越式潮流料理 + 調酒，中午人較少。</div>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d1-free">
+          <div class="item-body">
+            <time>15:30</time><span class="free-slot">自由時間 15:30-17:30｜飯店泳池 / Moc Huong 快速按摩</span>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d1-evening">
+          <div class="item-body">
+            <time>17:30</time>晚餐：Secret Garden Rooftop
+            <div>之後散步阮惠步行街，看噴泉與歌劇院夜景。</div>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d1-bar">
+          <div class="item-body">
+            <time>21:30</time>Social Club Rooftop Bar
+            <div>建議 21:00 前到，Sky Pool 打卡、DJ Set。</div>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
       </ul>
     </section>
 
     <section class="day-card" data-like-id="day2">
-      <h3>Day 2 · 3/15 Sat — 經典地標 & 河上晚餐 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
+      <h3>Day 2 · 3/15 Sun — 經典地標 & 河上晚餐 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
       <div class="image-grid">
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/Notre_Dame_Cathedral_Saigon.jpg" alt="Notre Dame" />
-          <figcaption>西貢聖母大教堂</figcaption>
+          <figcaption>聖母大教堂</figcaption>
         </figure>
         <figure>
-          <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Ho_Chi_Minh_City_Post_Office.jpg" alt="Central Post Office" />
-          <figcaption>中央郵局 & 書街</figcaption>
+          <img src="https://upload.wikimedia.org/wikipedia/commons/4/4a/Ho_Chi_Minh_City_Post_Office.jpg" alt="Post Office" />
+          <figcaption>中央郵局</figcaption>
         </figure>
       </div>
       <ul class="schedule">
-        <li><time>08:30</time>聖母大教堂、中央郵局、Nguyen Van Binh 書街</li>
-        <li><time>10:00</time>咖啡：<strong>The Workshop</strong> 或 <strong>Shin Coffee</strong></li>
-        <li><time>11:30</time>午餐：<strong>Propaganda Bistro</strong></li>
-        <li><time>13:30</time><strong>戰爭遺跡館</strong> → <strong>統一宮</strong></li>
-        <li><time>16:00</time>按摩：<strong>Moc Huong Spa</strong></li>
-        <li><time>19:00</time>Saigon River 遊船：<strong>Bonsai Legacy Cruise</strong></li>
+        <li data-event-id="d2-morning">
+          <div class="item-body">
+            <time>08:30</time>聖母大教堂 + 中央郵局 + 書街
+            <div>一路步行；可在 The Workshop 喝咖啡。</div>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d2-lunch">
+          <div class="item-body">
+            <time>11:30</time>午餐：Propaganda Bistro
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d2-museum">
+          <div class="item-body">
+            <time>13:30</time>戰爭遺跡館 → 統一宮
+            <div>建議預留 2hr，展場多。</div>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d2-free">
+          <div class="item-body">
+            <time>15:30</time><span class="free-slot">自由時間 15:30-17:30｜飯店休息 / 自選咖啡店</span>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d2-spa">
+          <div class="item-body">
+            <time>17:30</time>Moc Huong Spa 90min 芳療
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d2-cruise">
+          <div class="item-body">
+            <time>19:00</time>Bonsai Legacy River Cruise
+            <div>需 18:30 前報到；含自助餐 + Live band。</div>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
       </ul>
     </section>
 
     <section class="day-card" data-like-id="day3">
-      <h3>Day 3 · 3/16 Sun — 摩天大樓 & 網紅咖啡廳 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
+      <h3>Day 3 · 3/16 Mon — Landmark 81 & 網紅咖啡廳 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
       <div class="image-grid">
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Landmark_81_(Ho_Chi_Minh_City).jpg" alt="Landmark 81" />
@@ -128,20 +185,53 @@
         </figure>
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/1/1a/Cafe_Apartment_in_Saigon.jpg" alt="Cafe Apartment" />
-          <figcaption>Nguyen Hue 網紅咖啡公寓</figcaption>
+          <figcaption>阮惠咖啡公寓</figcaption>
         </figure>
       </div>
       <ul class="schedule">
-        <li><time>09:30</time>Landmark 81 SkyView（88F）</li>
-        <li><time>12:30</time>午餐：<strong>Ussina Sky 71</strong> 或 Landmark B3</li>
-        <li><time>15:00</time>Nguyen Hue Cafe Apartment 探店</li>
-        <li><time>18:30</time>晚餐：<strong>Pizza 4P’s</strong></li>
-        <li><time>21:00</time>酒吧：<strong>Chill Skybar</strong> or <strong>Snuffbox</strong></li>
+        <li data-event-id="d3-landmark">
+          <div class="item-body">
+            <time>09:30</time>Landmark 81 SkyView 觀景台
+            <div>建議提前線上購票，含玻璃橋體驗。</div>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d3-lunch">
+          <div class="item-body">
+            <time>12:30</time>午餐：Ussina Sky 71 或 Landmark B3 美食街
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d3-free">
+          <div class="item-body">
+            <time>14:30</time><span class="free-slot">自由時間 14:30-16:30｜飯店休息 / 泳池 / 另找按摩</span>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d3-cafe">
+          <div class="item-body">
+            <time>16:30</time>Nguyen Hue Cafe Apartment 探店
+            <div>Partea、Boo Coffee、Saigon Ơi 等打卡景點。</div>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d3-dinner">
+          <div class="item-body">
+            <time>18:30</time>晚餐：Pizza 4P's Hai Ba Trung（需預約）
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d3-bar">
+          <div class="item-body">
+            <time>21:00</time>Chill Skybar / Snuffbox speakeasy
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
       </ul>
     </section>
 
     <section class="day-card" data-like-id="day4">
-      <h3>Day 4 · 3/17 Mon — 市場、美食與手作巧克力 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
+      <h3>Day 4 · 3/17 Tue — 市場、美食與精釀 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
       <div class="image-grid">
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Ben_Thanh_Market.jpg" alt="Ben Thanh" />
@@ -149,20 +239,45 @@
         </figure>
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Saigon_River_Sunset.jpg" alt="Saigon River" />
-          <figcaption>西貢河畔步道</figcaption>
+          <figcaption>西貢河畔</figcaption>
         </figure>
       </div>
       <ul class="schedule">
-        <li><time>08:30</time>早餐：<strong>Bánh mì Huỳnh Hoa</strong> + 濱城市場採買</li>
-        <li><time>11:30</time>午餐：<strong>Hum Vegetarian</strong></li>
-        <li><time>14:00</time>第五郡：<strong>天后宮</strong>、<strong>An Dong Market</strong></li>
-        <li><time>16:00</time>甜點：<strong>Maison Marou Saigon</strong></li>
-        <li><time>20:00</time>酒吧：<strong>Pasteur Street Brewing</strong> / <strong>BiaCraft</strong></li>
+        <li data-event-id="d4-breakfast">
+          <div class="item-body">
+            <time>08:30</time>Bánh mì Huỳnh Hoa + 濱城市場早市
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d4-temple">
+          <div class="item-body">
+            <time>10:30</time>第五郡：天后宮、An Dong 市場
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d4-lunch">
+          <div class="item-body">
+            <time>12:30</time>午餐：Hum Vegetarian (Dong Khoi)
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d4-free">
+          <div class="item-body">
+            <time>15:00</time><span class="free-slot">自由時間 15:00-17:00｜Maison Marou 甜點 / 飯店放空</span>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d4-brew">
+          <div class="item-body">
+            <time>20:00</time>Pasteur Street Brewing / BiaCraft 精釀酒吧
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
       </ul>
     </section>
 
     <section class="day-card" data-like-id="day5">
-      <h3>Day 5 · 3/18 Tue — 粉紅教堂 & 收心按摩 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
+      <h3>Day 5 · 3/18 Wed — 粉紅教堂 & 返程 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
       <div class="image-grid">
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/T%C3%A2n_%C4%90%E1%BB%8Bnh_Church_2017.jpg" alt="Tan Dinh" />
@@ -170,17 +285,53 @@
         </figure>
       </div>
       <ul class="schedule">
-        <li><time>08:30</time>Tan Dinh Church + <strong>PhinDeli</strong> 咖啡</li>
-        <li><time>11:30</time>午餐：<strong>Cục Gạch Quán</strong></li>
-        <li><time>14:30</time>購物：Saigon Centre / Takashimaya</li>
-        <li><time>17:00</time>按摩：<strong>Temple Leaf Spa</strong> or <strong>Anam QT Spa</strong></li>
-        <li><time>20:00</time>夜宵：<strong>Layla</strong> / <strong>The Alley Cocktail</strong></li>
+        <li data-event-id="d5-church">
+          <div class="item-body">
+            <time>08:30</time>Tan Dinh Church + PhinDeli 咖啡
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d5-lunch">
+          <div class="item-body">
+            <time>11:00</time>午餐：Cục Gạch Quán（提早用餐）
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d5-free">
+          <div class="item-body">
+            <time>12:30</time><span class="free-slot">自由時間 12:30-14:30｜最後採買 / Temple Leaf Spa 快速按摩</span>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
+        <li data-event-id="d5-flight">
+          <div class="item-body">
+            <time>14:30</time>赴機場 + BR396 返台｜<span class="tag">航班 BR396</span>
+            <div>建議 12:30-13:00 退房，14:30 到 TSN 機場，15:10 起飛 → 19:35 抵達桃園。</div>
+          </div>
+          <button class="mini-like-btn">👍 <span>0</span></button>
+        </li>
       </ul>
     </section>
 
+    <section class="gallery">
+      <h2>圖片 / 參考連結索引</h2>
+      <ul>
+        <li><strong>西貢歌劇院</strong><br><a href="https://upload.wikimedia.org/wikipedia/commons/9/95/Saigon_Opera_House_2016.jpg" target="_blank">檢視圖片</a></li>
+        <li><strong>阮惠步行街</strong><br><a href="https://upload.wikimedia.org/wikipedia/commons/8/8c/Nguyen_Hue_Walking_Street.jpg" target="_blank">檢視圖片</a></li>
+        <li><strong>聖母大教堂</strong><br><a href="https://upload.wikimedia.org/wikipedia/commons/a/ad/Notre_Dame_Cathedral_Saigon.jpg" target="_blank">檢視圖片</a></li>
+        <li><strong>中央郵局</strong><br><a href="https://upload.wikimedia.org/wikipedia/commons/4/4a/Ho_Chi_Minh_City_Post_Office.jpg" target="_blank">檢視圖片</a></li>
+        <li><strong>Landmark 81</strong><br><a href="https://upload.wikimedia.org/wikipedia/commons/3/33/Landmark_81_(Ho_Chi_Minh_City).jpg" target="_blank">檢視圖片</a></li>
+        <li><strong>咖啡公寓</strong><br><a href="https://upload.wikimedia.org/wikipedia/commons/1/1a/Cafe_Apartment_in_Saigon.jpg" target="_blank">檢視圖片</a></li>
+        <li><strong>濱城市場</strong><br><a href="https://upload.wikimedia.org/wikipedia/commons/7/74/Ben_Thanh_Market.jpg" target="_blank">檢視圖片</a></li>
+        <li><strong>西貢河畔</strong><br><a href="https://upload.wikimedia.org/wikipedia/commons/2/24/Saigon_River_Sunset.jpg" target="_blank">檢視圖片</a></li>
+        <li><strong>Tan Dinh 教堂</strong><br><a href="https://upload.wikimedia.org/wikipedia/commons/6/69/T%C3%A2n_%C4%90%E1%BB%8Bnh_Church_2017.jpg" target="_blank">檢視圖片</a></li>
+      </ul>
+    </section>
+
+    <!-- Planner -->
     <section class="planner">
       <h2>互動行程板 (本機 + GitHub 同步)</h2>
-      <p>新增 / 編輯行程會寫入瀏覽器 localStorage。若輸入 GitHub Token 並點擊「儲存至 GitHub」，即可將最新行程與點讚同步到 <code>data/hcmc-plan.json</code>，供全員共同查看。</p>
+      <p>新增 / 編輯行程會先儲存在本機瀏覽器；若輸入 GitHub PAT 後按「儲存至 GitHub」，會把行程 + 日按讚 + 單一行程按讚寫入 `data/hcmc-plan.json`。</p>
       <form id="plan-form">
         <div>
           <label for="date">日期</label>
@@ -200,7 +351,7 @@
         </div>
         <div style="grid-column:1/-1;">
           <label for="notes">備註</label>
-          <textarea id="notes" placeholder="交通、預約資訊、同行夥伴需求"></textarea>
+          <textarea id="notes" placeholder="交通、預約資訊"></textarea>
         </div>
         <button type="submit" id="save-btn">新增行程</button>
         <button type="button" id="reset-btn" style="background:#facc15;color:#111;">重置表單</button>
@@ -214,8 +365,8 @@
       <form id="cloud-form">
         <div>
           <label for="gh-token">GitHub Token</label>
-          <input type="password" id="gh-token" placeholder="輸入有 repo 權限的 PAT (僅存本機)" />
-          <small>建議建立 Fine-grained token，僅授權 repo <code>AlbertLiu16888/todo-web</code>。</small>
+          <input type="password" id="gh-token" placeholder="貼入具 repo 權限的 PAT (僅存本機)" />
+          <small>建議建立 Fine-grained token（repo: todo-web），完成後按「儲存至 GitHub」。</small>
         </div>
         <button type="button" id="refresh-btn" style="background:#0ea5e9;">重新載入 GitHub 版本</button>
         <button type="button" id="cloud-save-btn">儲存至 GitHub</button>
@@ -227,13 +378,7 @@
   <script>
     const boardEl = document.getElementById('board');
     const form = document.getElementById('plan-form');
-    const inputs = {
-      date: document.getElementById('date'),
-      time: document.getElementById('time'),
-      title: document.getElementById('title'),
-      location: document.getElementById('location'),
-      notes: document.getElementById('notes')
-    };
+    const inputs = { date:document.getElementById('date'), time:document.getElementById('time'), title:document.getElementById('title'), location:document.getElementById('location'), notes:document.getElementById('notes') };
     const saveBtn = document.getElementById('save-btn');
     const resetBtn = document.getElementById('reset-btn');
     const exportBtn = document.getElementById('export-btn');
@@ -243,192 +388,190 @@
     const syncStatus = document.getElementById('sync-status');
 
     const likesDefault = { day1:0, day2:0, day3:0, day4:0, day5:0 };
-    let plan = [];
-    let likes = { ...likesDefault };
-    let editIndex = null;
-    let currentSha = null;
+    const eventLikeDefault = {
+      'd1-flight':0,'d1-arrival':0,'d1-lunch':0,'d1-free':0,'d1-evening':0,'d1-bar':0,
+      'd2-morning':0,'d2-lunch':0,'d2-museum':0,'d2-free':0,'d2-spa':0,'d2-cruise':0,
+      'd3-landmark':0,'d3-lunch':0,'d3-free':0,'d3-cafe':0,'d3-dinner':0,'d3-bar':0,
+      'd4-breakfast':0,'d4-temple':0,'d4-lunch':0,'d4-free':0,'d4-brew':0,
+      'd5-church':0,'d5-lunch':0,'d5-free':0,'d5-flight':0
+    };
 
     const localPlan = JSON.parse(localStorage.getItem('hcmcPlan') || 'null');
     const localLikes = JSON.parse(localStorage.getItem('hcmcLikes') || 'null');
+    const localEventLikes = JSON.parse(localStorage.getItem('hcmcEventLikes') || 'null');
+
+    let plan = localPlan || [
+      { date:'2026-03-14', time:'09:10', title:'BR395 TPE→SGN', location:'長榮航空', notes:'06:30 報到' },
+      { date:'2026-03-15', time:'19:00', title:'Bonsai Legacy River Cruise', location:'Saigon River Pier', notes:'18:30 前報到' },
+      { date:'2026-03-16', time:'09:30', title:'Landmark 81 SkyView', location:'Binh Thanh', notes:'線上購票含玻璃橋' }
+    ];
+    let likes = localLikes || { ...likesDefault };
+    let eventLikes = localEventLikes || { ...eventLikeDefault };
+    let editIndex = null;
+
     const storedToken = localStorage.getItem('hcmcGhToken');
     if (storedToken) tokenInput.value = storedToken;
 
-    const defaultPlan = [
-      { date: '2026-03-14', time: '21:30', title: 'Social Club Rooftop Bar', location: 'Hôtel des Arts · Rooftop', notes: 'Smart casual；日落後 DJ set' },
-      { date: '2026-03-15', time: '19:00', title: 'Bonsai Legacy River Cruise', location: 'Saigon River Pier', notes: '預約含自助餐；18:30 前報到' },
-      { date: '2026-03-16', time: '09:30', title: 'Landmark 81 SkyView', location: 'Binh Thanh District', notes: 'Grab ₫90k；購票含玻璃橋' },
-      { date: '2026-03-17', time: '16:00', title: 'Maison Marou Chocolate Class', location: '167-169 Calmette', notes: '提前於官網預約手作課程' },
-      { date: '2026-03-18', time: '17:00', title: 'Temple Leaf Spa', location: '74/1 Hai Ba Trung', notes: '90 分鐘越式按摩 · Tipping ₫40k' }
-    ];
-
-    async function loadFromGitHub(showStatus = false) {
+    async function loadFromGitHub(showStatus=false){
       try {
-        const url = `${window.location.pathname.replace(/\/[^/]*$/, '')}/data/hcmc-plan.json?ts=${Date.now()}`;
+        const url = `${window.location.origin}${window.location.pathname.replace(/\/[^/]*$/, '')}/data/hcmc-plan.json?ts=${Date.now()}`;
         const res = await fetch(url);
-        if (!res.ok) throw new Error('讀取 GitHub 版本失敗');
+        if (!res.ok) throw new Error('GitHub 載入失敗');
         const data = await res.json();
-        plan = data.plan || defaultPlan;
-        likes = data.likes || { ...likesDefault };
+        plan = data.plan || plan;
+        likes = data.likes || likes;
+        eventLikes = data.eventLikes || eventLikes;
         localStorage.setItem('hcmcPlan', JSON.stringify(plan));
         localStorage.setItem('hcmcLikes', JSON.stringify(likes));
-        if (showStatus) syncStatus.textContent = '已載入 GitHub 最新版本 ( ' + (data.updated || '') + ' )';
+        localStorage.setItem('hcmcEventLikes', JSON.stringify(eventLikes));
+        if (showStatus) syncStatus.textContent = '已載入 GitHub 最新版本 (' + (data.updated || '') + ')';
       } catch (err) {
-        console.warn(err);
-        plan = localPlan || defaultPlan;
-        likes = localLikes || { ...likesDefault };
-        if (showStatus) syncStatus.textContent = '無法連線 GitHub，改用本機資料';
+        if (showStatus) syncStatus.textContent = '載入失敗：' + err.message + '，改用本機資料';
       }
-      render();
-      renderLikes();
+      renderBoard();
+      renderDayLikes();
+      renderEventLikes();
     }
 
-    function render() {
-      boardEl.innerHTML = '';
-      plan
-        .slice()
-        .sort((a,b) => (a.date + a.time).localeCompare(b.date + b.time))
-        .forEach((item,index) => {
-          const box = document.createElement('div');
-          box.className = 'board-item';
-          box.innerHTML = `
-            <div><strong>${item.date}</strong></div>
-            <div><small>${item.time}</small></div>
-            <div>
-              <strong>${item.title}</strong><br />
-              <small>${item.location || ''}</small><br />
-              <small>${item.notes || ''}</small>
-            </div>
-            <div>
-              <button type="button" onclick="editItem(${index})">編輯</button>
-              <button type="button" class="delete" onclick="deleteItem(${index})">刪除</button>
-            </div>`;
-          boardEl.appendChild(box);
-        });
+    function renderBoard(){
+      boardEl.innerHTML='';
+      plan.slice().sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time)).forEach((item,index)=>{
+        const box=document.createElement('div');
+        box.className='board-item';
+        box.innerHTML=`<div><strong>${item.date}</strong></div>
+          <div><small>${item.time}</small></div>
+          <div><strong>${item.title}</strong><br><small>${item.location||''}</small><br><small>${item.notes||''}</small></div>
+          <div>
+            <button type="button" onclick="editItem(${index})">編輯</button>
+            <button type="button" class="delete" onclick="deleteItem(${index})">刪除</button>
+          </div>`;
+        boardEl.appendChild(box);
+      });
       localStorage.setItem('hcmcPlan', JSON.stringify(plan));
     }
 
-    function renderLikes() {
-      document.querySelectorAll('.day-card').forEach(card => {
-        const id = card.getAttribute('data-like-id');
-        const btn = card.querySelector('.like-btn');
-        const count = likes[id] || 0;
-        btn.querySelector('span').textContent = count;
+    function renderDayLikes(){
+      document.querySelectorAll('.day-card').forEach(card=>{
+        const id=card.getAttribute('data-like-id');
+        const btn=card.querySelector('.like-btn');
+        btn.querySelector('span').textContent = likes[id] || 0;
         const likedSet = JSON.parse(localStorage.getItem('likedDays') || '[]');
-        if (likedSet.includes(id)) btn.classList.add('liked');
-        else btn.classList.remove('liked');
+        btn.classList.toggle('liked', likedSet.includes(id));
       });
-      localStorage.setItem('hcmcLikes', JSON.stringify(likes));
     }
 
-    window.editItem = function(index) {
-      const item = plan[index];
-      inputs.date.value = item.date;
-      inputs.time.value = item.time;
-      inputs.title.value = item.title;
-      inputs.location.value = item.location || '';
-      inputs.notes.value = item.notes || '';
-      editIndex = index;
-      saveBtn.textContent = '更新行程';
-    };
+    function renderEventLikes(){
+      document.querySelectorAll('[data-event-id]').forEach(item=>{
+        const id=item.getAttribute('data-event-id');
+        const btn=item.querySelector('.mini-like-btn');
+        if(!btn) return;
+        btn.querySelector('span').textContent = eventLikes[id] || 0;
+        const likedEvents = JSON.parse(localStorage.getItem('likedEvents') || '[]');
+        btn.classList.toggle('liked', likedEvents.includes(id));
+      });
+    }
 
-    window.deleteItem = function(index) {
-      plan.splice(index, 1);
-      editIndex = null;
-      saveBtn.textContent = '新增行程';
-      render();
-    };
-
-    function handleLikeButtons() {
-      document.querySelectorAll('.like-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          const card = btn.closest('.day-card');
-          const id = card.getAttribute('data-like-id');
-          const likedSet = JSON.parse(localStorage.getItem('likedDays') || '[]');
-          if (likedSet.includes(id)) {
-            alert('已點過讚囉！');
-            return;
-          }
-          likes[id] = (likes[id] || 0) + 1;
+    function bindDayLikeButtons(){
+      document.querySelectorAll('.like-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          const card=btn.closest('.day-card');
+          const id=card.getAttribute('data-like-id');
+          const likedSet=JSON.parse(localStorage.getItem('likedDays')||'[]');
+          if(likedSet.includes(id)){ alert('已點過讚囉！'); return; }
+          likes[id]=(likes[id]||0)+1;
           likedSet.push(id);
           localStorage.setItem('likedDays', JSON.stringify(likedSet));
-          renderLikes();
+          localStorage.setItem('hcmcLikes', JSON.stringify(likes));
+          renderDayLikes();
         });
       });
     }
 
-    async function saveToGitHub() {
-      const token = tokenInput.value.trim();
-      if (!token) { alert('請輸入 GitHub Token'); return; }
-      syncStatus.textContent = '儲存中…';
-      localStorage.setItem('hcmcGhToken', token);
-      try {
-        const getRes = await fetch('https://api.github.com/repos/AlbertLiu16888/todo-web/contents/data/hcmc-plan.json');
-        const getJson = await getRes.json();
-        const sha = getJson.sha;
-        const payload = { updated: new Date().toISOString(), plan, likes };
-        const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
-        const body = {
-          message: 'Update HCMC plan via planner',
-          content,
-          sha
-        };
-        const putRes = await fetch('https://api.github.com/repos/AlbertLiu16888/todo-web/contents/data/hcmc-plan.json', {
-          method: 'PUT',
-          headers: {
-            'Authorization': `token ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(body)
+    function bindEventLikeButtons(){
+      document.querySelectorAll('.mini-like-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          const li=btn.closest('[data-event-id]');
+          const id=li.getAttribute('data-event-id');
+          const likedEvents=JSON.parse(localStorage.getItem('likedEvents')||'[]');
+          if(likedEvents.includes(id)){ alert('這個行程你已經按讚過囉！'); return; }
+          eventLikes[id]=(eventLikes[id]||0)+1;
+          likedEvents.push(id);
+          localStorage.setItem('likedEvents', JSON.stringify(likedEvents));
+          localStorage.setItem('hcmcEventLikes', JSON.stringify(eventLikes));
+          renderEventLikes();
         });
-        if (!putRes.ok) throw new Error('GitHub 儲存失敗');
-        syncStatus.textContent = '已儲存到 GitHub ✔';
-        await loadFromGitHub();
-      } catch (err) {
-        console.error(err);
-        syncStatus.textContent = '儲存失敗：' + err.message;
-      }
+      });
     }
 
-    form.addEventListener('submit', e => {
+    window.editItem=function(index){
+      const item=plan[index];
+      inputs.date.value=item.date;
+      inputs.time.value=item.time;
+      inputs.title.value=item.title;
+      inputs.location.value=item.location||'';
+      inputs.notes.value=item.notes||'';
+      editIndex=index;
+      saveBtn.textContent='更新行程';
+    };
+
+    window.deleteItem=function(index){
+      plan.splice(index,1);
+      editIndex=null;
+      saveBtn.textContent='新增行程';
+      renderBoard();
+    };
+
+    form.addEventListener('submit',e=>{
       e.preventDefault();
-      const newItem = {
-        date: inputs.date.value,
-        time: inputs.time.value,
-        title: inputs.title.value,
-        location: inputs.location.value,
-        notes: inputs.notes.value
-      };
-      if (editIndex !== null) {
-        plan[editIndex] = newItem;
-        editIndex = null;
-        saveBtn.textContent = '新增行程';
-      } else {
-        plan.push(newItem);
-      }
+      const newItem={ date:inputs.date.value, time:inputs.time.value, title:inputs.title.value, location:inputs.location.value, notes:inputs.notes.value };
+      if(editIndex!==null){ plan[editIndex]=newItem; editIndex=null; saveBtn.textContent='新增行程'; }
+      else plan.push(newItem);
       form.reset();
-      render();
+      renderBoard();
     });
 
-    resetBtn.addEventListener('click', () => {
-      form.reset();
-      editIndex = null;
-      saveBtn.textContent = '新增行程';
-    });
+    resetBtn.addEventListener('click',()=>{ form.reset(); editIndex=null; saveBtn.textContent='新增行程'; });
 
-    exportBtn.addEventListener('click', () => {
-      const payload = { plan, likes };
-      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(payload, null, 2));
-      const dl = document.createElement('a');
-      dl.setAttribute('href', dataStr);
-      dl.setAttribute('download', 'hcmc-plan-export.json');
+    exportBtn.addEventListener('click',()=>{
+      const payload={ plan, likes, eventLikes };
+      const dataStr='data:text/json;charset=utf-8,'+encodeURIComponent(JSON.stringify(payload,null,2));
+      const dl=document.createElement('a');
+      dl.setAttribute('href',dataStr);
+      dl.setAttribute('download','hcmc-plan-export.json');
       dl.click();
     });
 
-    refreshBtn.addEventListener('click', () => loadFromGitHub(true));
-    cloudSaveBtn.addEventListener('click', saveToGitHub);
+    refreshBtn.addEventListener('click',()=>loadFromGitHub(true));
+    cloudSaveBtn.addEventListener('click',saveToGitHub);
+
+    async function saveToGitHub(){
+      const token=tokenInput.value.trim();
+      if(!token){ alert('請輸入 GitHub Token'); return; }
+      syncStatus.textContent='儲存中…';
+      localStorage.setItem('hcmcGhToken',token);
+      try{
+        const getRes=await fetch('https://api.github.com/repos/AlbertLiu16888/todo-web/contents/data/hcmc-plan.json');
+        const getJson=await getRes.json();
+        const payload={ updated:new Date().toISOString(), plan, likes, eventLikes };
+        const content=btoa(unescape(encodeURIComponent(JSON.stringify(payload,null,2))));
+        const body={ message:'Update HCMC plan via planner', content, sha:getJson.sha };
+        const putRes=await fetch('https://api.github.com/repos/AlbertLiu16888/todo-web/contents/data/hcmc-plan.json',{
+          method:'PUT',
+          headers:{ 'Authorization':`token ${token}`,'Content-Type':'application/json' },
+          body:JSON.stringify(body)
+        });
+        if(!putRes.ok) throw new Error('GitHub 儲存失敗');
+        syncStatus.textContent='已儲存到 GitHub ✔';
+        await loadFromGitHub();
+      }catch(err){
+        syncStatus.textContent='儲存失敗：'+err.message;
+      }
+    }
 
     loadFromGitHub();
-    handleLikeButtons();
+    bindDayLikeButtons();
+    bindEventLikeButtons();
+    renderBoard();
   </script>
 </body>
 </html>

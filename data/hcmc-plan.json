@@ -1,11 +1,11 @@
 {
-  "updated": "2026-03-13T15:30:00.000Z",
+  "updated": "2026-03-14T05:50:00.000Z",
   "plan": [
-    {"date":"2026-03-14","time":"21:30","title":"Social Club Rooftop Bar","location":"Hôtel des Arts · Rooftop","notes":"Smart casual；日落後 DJ set"},
-    {"date":"2026-03-15","time":"19:00","title":"Bonsai Legacy River Cruise","location":"Saigon River Pier","notes":"預約含自助餐；18:30 前報到"},
-    {"date":"2026-03-16","time":"09:30","title":"Landmark 81 SkyView","location":"Binh Thanh District","notes":"Grab ₫90k；購票含玻璃橋"},
-    {"date":"2026-03-17","time":"16:00","title":"Maison Marou Chocolate Class","location":"167-169 Calmette","notes":"提前於官網預約手作課程"},
-    {"date":"2026-03-18","time":"17:00","title":"Temple Leaf Spa","location":"74/1 Hai Ba Trung","notes":"90 分鐘越式按摩 · Tipping ₫40k"}
+    {"date":"2026-03-14","time":"09:10","title":"BR395 TPE→SGN","location":"桃園 T2","notes":"06:30 報到"},
+    {"date":"2026-03-15","time":"19:00","title":"Bonsai Legacy River Cruise","location":"Saigon River Pier","notes":"18:30 前報到"},
+    {"date":"2026-03-16","time":"09:30","title":"Landmark 81 SkyView","location":"Binh Thanh","notes":"購票含玻璃橋"},
+    {"date":"2026-03-17","time":"20:00","title":"Pasteur Street Brewing","location":"District 1","notes":"精釀體驗"},
+    {"date":"2026-03-18","time":"15:10","title":"BR396 SGN→TPE","location":"新山一機場","notes":"建議 14:30 前到場"}
   ],
   "likes": {
     "day1": 0,
@@ -13,5 +13,34 @@
     "day3": 0,
     "day4": 0,
     "day5": 0
+  },
+  "eventLikes": {
+    "d1-flight": 0,
+    "d1-arrival": 0,
+    "d1-lunch": 0,
+    "d1-free": 0,
+    "d1-evening": 0,
+    "d1-bar": 0,
+    "d2-morning": 0,
+    "d2-lunch": 0,
+    "d2-museum": 0,
+    "d2-free": 0,
+    "d2-spa": 0,
+    "d2-cruise": 0,
+    "d3-landmark": 0,
+    "d3-lunch": 0,
+    "d3-free": 0,
+    "d3-cafe": 0,
+    "d3-dinner": 0,
+    "d3-bar": 0,
+    "d4-breakfast": 0,
+    "d4-temple": 0,
+    "d4-lunch": 0,
+    "d4-free": 0,
+    "d4-brew": 0,
+    "d5-church": 0,
+    "d5-lunch": 0,
+    "d5-free": 0,
+    "d5-flight": 0
   }
 }
