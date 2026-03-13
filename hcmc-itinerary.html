@@ -7,8 +7,8 @@
   <style>
     :root {
       font-family: "Noto Sans TC", "Segoe UI", sans-serif;
-      color: #0f172a;
       background: #f6f7fb;
+      color: #0f172a;
     }
     body {
       margin: 0;
@@ -22,151 +22,61 @@
       padding: 32px 24px;
       text-align: center;
     }
-    header h1 {
-      margin: 0;
-      font-size: clamp(1.7rem, 4vw, 2.8rem);
-    }
-    header p {
-      margin: 6px 0 0;
-      opacity: .9;
-    }
-    .container {
-      width: min(1200px, 92vw);
-      margin: 0 auto;
-      padding: 32px 0 80px;
-    }
-    .tips, .planner, .day-card {
-      background: #fff;
-      border-radius: 18px;
-      padding: 20px;
-      margin-bottom: 24px;
-      box-shadow: 0 18px 40px rgba(15,23,42,.08);
-    }
-    .tips h2, .planner h2 { margin-top: 0; }
+    header h1 { margin: 0; font-size: clamp(1.7rem, 4vw, 2.8rem); }
+    header p { margin: 6px 0 0; opacity: .9; }
+    .container { width: min(1200px, 92vw); margin: 0 auto; padding: 32px 0 80px; }
+    .tips, .planner, .day-card, .cloud-panel { background: #fff; border-radius: 18px; padding: 20px; margin-bottom: 24px; box-shadow: 0 18px 40px rgba(15,23,42,.08); }
+    .tips h2, .planner h2, .cloud-panel h2 { margin-top: 0; }
     .tips ul { padding-left: 20px; }
-    .day-card h3 { margin-top: 0; font-size: 1.25rem; }
-    .schedule {
-      list-style: none;
-      padding: 0;
-      margin: 14px 0 0;
-      border-left: 3px solid #f97316;
-    }
-    .schedule li {
-      margin: 0 0 14px 14px;
-      padding-left: 12px;
-      position: relative;
-    }
-    .schedule li::before {
-      content: '';
-      position: absolute;
-      left: -19px;
-      top: 6px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: #f97316;
-    }
-    .schedule time {
-      font-weight: 700;
-      color: #7c3aed;
-      margin-right: 6px;
-    }
-    .image-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 10px;
-      margin: 14px 0;
-    }
-    figure {
-      margin: 0;
-      background: #f1f5f9;
-      border-radius: 12px;
-      overflow: hidden;
-      border: 1px solid rgba(15,23,42,.08);
-    }
-    figure img {
-      width: 100%;
-      height: 140px;
-      object-fit: cover;
-      display: block;
-    }
-    figure figcaption {
-      font-size: .85rem;
-      padding: 6px 10px 10px;
-      color: #475569;
-    }
-    .planner form {
-      display: grid;
-      gap: 12px;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    }
-    label { font-weight: 600; font-size: .9rem; }
-    input, textarea, select, button {
-      font: inherit;
-      border-radius: 10px;
-      border: 1px solid #cbd5f5;
-      padding: 10px 12px;
-      width: 100%;
-      box-sizing: border-box;
-    }
-    textarea { min-height: 100px; }
-    button {
-      background: linear-gradient(120deg, #7c3aed, #f97316);
-      color: #fff;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      transition: opacity .2s ease;
-    }
-    button:hover { opacity: .9; }
-    .board {
-      margin-top: 24px;
-      border-top: 1px solid rgba(15,23,42,.08);
-      padding-top: 18px;
-    }
-    .board-item {
-      display: grid;
-      grid-template-columns: 140px 90px 1fr auto;
-      gap: 10px;
-      align-items: center;
-      padding: 10px;
-      border-radius: 12px;
-      border: 1px solid rgba(148,163,184,.6);
-      margin-bottom: 8px;
-      background: #f8fafc;
-    }
-    .board-item small { color: #475569; }
-    .board-item button {
-      padding: 6px 10px;
-      font-size: .85rem;
-      margin-left: 6px;
-      background: #0ea5e9;
-    }
-    .board-item button.delete { background: #ef4444; }
-    @media (max-width: 640px) {
-      .board-item { grid-template-columns: 1fr; }
-    }
+    .day-card h3 { margin-top: 0; font-size: 1.25rem; display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap; }
+    .like-btn { border:none; background:#f1f5f9; color:#0f172a; border-radius:999px; padding:6px 12px; font-weight:600; cursor:pointer; display:flex; align-items:center; gap:6px; }
+    .like-btn.liked { background:#7c3aed; color:#fff; }
+    .like-btn span { font-weight:700; }
+    .schedule { list-style:none; padding:0; margin:14px 0 0; border-left:3px solid #f97316; }
+    .schedule li { margin:0 0 14px 14px; padding-left:12px; position:relative; }
+    .schedule li::before { content:''; position:absolute; left:-19px; top:6px; width:10px; height:10px; border-radius:50%; background:#f97316; }
+    .schedule time { font-weight:700; color:#7c3aed; margin-right:6px; }
+    .image-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; margin:14px 0; }
+    figure { margin:0; background:#f1f5f9; border-radius:12px; overflow:hidden; border:1px solid rgba(15,23,42,.08); }
+    figure img { width:100%; height:140px; object-fit:cover; display:block; }
+    figure figcaption { font-size:.85rem; padding:6px 10px 10px; color:#475569; }
+    .planner form, .cloud-panel form { display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); }
+    label { font-weight:600; font-size:.9rem; }
+    input, textarea, select, button { font:inherit; border-radius:10px; border:1px solid #cbd5f5; padding:10px 12px; width:100%; box-sizing:border-box; }
+    textarea { min-height:100px; }
+    button { background:linear-gradient(120deg,#7c3aed,#f97316); color:#fff; border:none; cursor:pointer; font-weight:600; transition:opacity .2s ease; }
+    button:hover { opacity:.9; }
+    .planner button, .cloud-panel button { width:100%; }
+    .board { margin-top:24px; border-top:1px solid rgba(15,23,42,.08); padding-top:18px; }
+    .board-item { display:grid; grid-template-columns:140px 90px 1fr auto; gap:10px; align-items:center; padding:10px; border-radius:12px; border:1px solid rgba(148,163,184,.6); margin-bottom:8px; background:#f8fafc; }
+    .board-item small { color:#475569; }
+    .board-item button { padding:6px 10px; font-size:.85rem; margin-left:6px; background:#0ea5e9; }
+    .board-item button.delete { background:#ef4444; }
+    .cloud-panel small { color:#475569; display:block; margin-top:4px; }
+    #sync-status { margin-top:12px; font-weight:600; }
+    @media (max-width:640px){ .board-item { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
   <header>
     <h1>胡志明市 District 1 旅行提案 · 2026/3/14-3/18</h1>
-    <p>住址：4B Thi Sach, Bến Nghé Ward（步行 5 分鐘到歌劇院） · 主要交通：Grab</p>
+    <p>住址：4B Thi Sach, Bến Nghé Ward · 主要交通：Grab</p>
+    <p style="margin-top:8px;font-size:.95rem;opacity:.85;">支援 GitHub 雲端儲存、互動行程板與每日點讚回饋</p>
   </header>
   <div class="container">
     <section class="tips">
       <h2>快訊 & 建議</h2>
       <ul>
-        <li><strong>Grab</strong>：機場到飯店約 30-40 分鐘（₫200k-280k）；市區短程多在 ₫40k-90k。</li>
-        <li><strong>換匯</strong>：帶美金在機場或 Bến Thành 市場周邊金店換越盾最划算；常用支付：現金＋國際信用卡。</li>
-        <li><strong>必備 App</strong>：Grab、Google Maps（下載離線地圖）、Papago/LINE Dict、OnePay。</li>
-        <li><strong>小費</strong>：按摩 ₫30k-50k、河船服務費若未含 5-10%。</li>
-        <li><strong>Dress code</strong>：Chill Skybar / Social Club 要 smart casual；帶薄外套因屋頂酒吧風大。</li>
+        <li><strong>Grab</strong>：機場→飯店 ₫200k-280k；市區短程 ₫40k-90k（可綁定 OnePay）。</li>
+        <li><strong>換匯</strong>：帶美金於機場或 Bến Thành 市場金店換匯；多數酒吧/飯店支援 VISA/Master。</li>
+        <li><strong>Dress code</strong>：Chill Skybar / Social Club 需 smart casual；帶薄外套因屋頂風大。</li>
+        <li><strong>小費</strong>：Spa ₫30k-50k、河船服務費如未含 5-10%。</li>
+        <li><strong>共享預約</strong>：此頁可登入 GitHub Token 後，將行程/點讚同步到 repo `data/hcmc-plan.json`，方便團隊共同維護。</li>
       </ul>
     </section>
 
-    <section class="day-card">
-      <h3>Day 1 · 3/14 Fri — 歌劇院周邊 & Rooftop 夜景</h3>
+    <section class="day-card" data-like-id="day1">
+      <h3>Day 1 · 3/14 Fri — 歌劇院周邊 & Rooftop 夜景 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
       <div class="image-grid">
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/9/95/Saigon_Opera_House_2016.jpg" alt="Saigon Opera House" />
@@ -178,17 +88,17 @@
         </figure>
       </div>
       <ul class="schedule">
-        <li><time>09:30</time>Grab 接機→4B Thi Sach Check-in（行李寄放後步行 5 分鐘可到歌劇院 & Vincom Center）</li>
-        <li><time>12:30</time>午餐：<strong>Xu Restaurant & Lounge</strong>（高棉+越味 Fusion，徒步 8 分鐘）</li>
-        <li><time>14:30</time>咖啡：<strong>L’Usine Dong Khoi</strong> 或 <strong>Sorae Café</strong>，可順遊歌劇院、Saigon Centre</li>
-        <li><time>17:30</time>晚餐：<strong>Secret Garden Rooftop</strong>（家庭菜＋越式小酒館氛圍）</li>
-        <li><time>20:00</time>步行至阮惠步行街看燈景＋統一堂外觀夜拍</li>
-        <li><time>21:30</time>酒吧：<strong>Social Club Rooftop @ Hôtel des Arts</strong>（高空泳池 + DJ）</li>
+        <li><time>09:30</time>Grab 接機→4B Thi Sach Check-in（步行 5 分鐘到歌劇院 & Vincom Center）</li>
+        <li><time>12:30</time>午餐：<strong>Xu Restaurant & Lounge</strong></li>
+        <li><time>14:30</time>咖啡：<strong>L’Usine Dong Khoi</strong> 或 <strong>Sorae Café</strong></li>
+        <li><time>17:30</time>晚餐：<strong>Secret Garden Rooftop</strong></li>
+        <li><time>20:00</time>阮惠步行街＋統一宮夜景</li>
+        <li><time>21:30</time>酒吧：<strong>Social Club Rooftop</strong></li>
       </ul>
     </section>
 
-    <section class="day-card">
-      <h3>Day 2 · 3/15 Sat — 經典地標 & 河上晚餐</h3>
+    <section class="day-card" data-like-id="day2">
+      <h3>Day 2 · 3/15 Sat — 經典地標 & 河上晚餐 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
       <div class="image-grid">
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/a/ad/Notre_Dame_Cathedral_Saigon.jpg" alt="Notre Dame" />
@@ -200,17 +110,17 @@
         </figure>
       </div>
       <ul class="schedule">
-        <li><time>08:30</time>Grab 至 <strong>聖母大教堂</strong> & <strong>中央郵局</strong>；穿過 <em>Nguyen Van Binh 書街</em></li>
-        <li><time>10:00</time>咖啡：<strong>The Workshop Coffee</strong>（看製程手沖）或 <strong>Shin Coffee</strong></li>
-        <li><time>11:30</time>午餐：<strong>Propaganda Bistro</strong>（彩繪牆 + 越式澡堂套餐）</li>
+        <li><time>08:30</time>聖母大教堂、中央郵局、Nguyen Van Binh 書街</li>
+        <li><time>10:00</time>咖啡：<strong>The Workshop</strong> 或 <strong>Shin Coffee</strong></li>
+        <li><time>11:30</time>午餐：<strong>Propaganda Bistro</strong></li>
         <li><time>13:30</time><strong>戰爭遺跡館</strong> → <strong>統一宮</strong></li>
-        <li><time>16:00</time>按摩：<strong>Moc Huong Spa Thi Sach</strong>（可預約 90 分鐘芳療）</li>
-        <li><time>19:00</time>Saigon River 遊船晚餐：<strong>Bonsai Legacy Cruise</strong>（含自助餐 & Live band）</li>
+        <li><time>16:00</time>按摩：<strong>Moc Huong Spa</strong></li>
+        <li><time>19:00</time>Saigon River 遊船：<strong>Bonsai Legacy Cruise</strong></li>
       </ul>
     </section>
 
-    <section class="day-card">
-      <h3>Day 3 · 3/16 Sun — 摩天大樓 & 網紅咖啡廳</h3>
+    <section class="day-card" data-like-id="day3">
+      <h3>Day 3 · 3/16 Sun — 摩天大樓 & 網紅咖啡廳 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
       <div class="image-grid">
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/3/33/Landmark_81_(Ho_Chi_Minh_City).jpg" alt="Landmark 81" />
@@ -222,37 +132,37 @@
         </figure>
       </div>
       <ul class="schedule">
-        <li><time>09:30</time>Grab 前往 <strong>Landmark 81 SkyView</strong>（88F 觀景台 + 玻璃橋）</li>
-        <li><time>12:30</time>午餐：<strong>Ussina Sky 71</strong> 或 Landmark 81 B3 美食街</li>
-        <li><time>15:00</time>回一郡：<strong>Nguyen Hue Cafe Apartment</strong> 逐層探店（Partea、Boo Coffee、Saigon Ơi）</li>
-        <li><time>18:30</time>晚餐：<strong>Pizza 4P's Hai Ba Trung</strong>（記得預約）</li>
-        <li><time>21:00</time>酒吧：<strong>Chill Skybar</strong>（Bitexco 對面）或 <strong>Snuffbox</strong> speakeasy</li>
+        <li><time>09:30</time>Landmark 81 SkyView（88F）</li>
+        <li><time>12:30</time>午餐：<strong>Ussina Sky 71</strong> 或 Landmark B3</li>
+        <li><time>15:00</time>Nguyen Hue Cafe Apartment 探店</li>
+        <li><time>18:30</time>晚餐：<strong>Pizza 4P’s</strong></li>
+        <li><time>21:00</time>酒吧：<strong>Chill Skybar</strong> or <strong>Snuffbox</strong></li>
       </ul>
     </section>
 
-    <section class="day-card">
-      <h3>Day 4 · 3/17 Mon — 市場、美食與手作巧克力</h3>
+    <section class="day-card" data-like-id="day4">
+      <h3>Day 4 · 3/17 Mon — 市場、美食與手作巧克力 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
       <div class="image-grid">
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/7/74/Ben_Thanh_Market.jpg" alt="Ben Thanh" />
-          <figcaption>濱城市場早市</figcaption>
+          <figcaption>濱城市場</figcaption>
         </figure>
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Saigon_River_Sunset.jpg" alt="Saigon River" />
-          <figcaption>傍晚河畔步道</figcaption>
+          <figcaption>西貢河畔步道</figcaption>
         </figure>
       </div>
       <ul class="schedule">
-        <li><time>08:30</time>早餐：<strong>Bánh mì Huỳnh Hoa</strong> 搭配濱城市場採買</li>
-        <li><time>11:30</time>午餐：<strong>Hum Vegetarian</strong>（素食 Fine dining）</li>
-        <li><time>14:00</time>Grab 至第五郡：<strong>天后宮 Thien Hau</strong>、<strong>An Dong Market</strong></li>
-        <li><time>16:00</time>甜點：<strong>Maison Marou Saigon</strong>（可參加巧克力工作坊）</li>
-        <li><time>20:00</time>酒吧：<strong>Pasteur Street Brewing Co.</strong> 或 <strong>BiaCraft Artisan Ales</strong></li>
+        <li><time>08:30</time>早餐：<strong>Bánh mì Huỳnh Hoa</strong> + 濱城市場採買</li>
+        <li><time>11:30</time>午餐：<strong>Hum Vegetarian</strong></li>
+        <li><time>14:00</time>第五郡：<strong>天后宮</strong>、<strong>An Dong Market</strong></li>
+        <li><time>16:00</time>甜點：<strong>Maison Marou Saigon</strong></li>
+        <li><time>20:00</time>酒吧：<strong>Pasteur Street Brewing</strong> / <strong>BiaCraft</strong></li>
       </ul>
     </section>
 
-    <section class="day-card">
-      <h3>Day 5 · 3/18 Tue — 粉紅教堂 & 收心按摩</h3>
+    <section class="day-card" data-like-id="day5">
+      <h3>Day 5 · 3/18 Tue — 粉紅教堂 & 收心按摩 <button class="like-btn" type="button">👍 喜歡 <span>0</span></button></h3>
       <div class="image-grid">
         <figure>
           <img src="https://upload.wikimedia.org/wikipedia/commons/6/69/T%C3%A2n_%C4%90%E1%BB%8Bnh_Church_2017.jpg" alt="Tan Dinh" />
@@ -260,17 +170,17 @@
         </figure>
       </div>
       <ul class="schedule">
-        <li><time>08:30</time>Grab 到 <strong>Tan Dinh Church</strong>（粉紅教堂）＋附近的 <strong>PhinDeli</strong> 咖啡</li>
-        <li><time>11:30</time>午餐：<strong>Cục Gạch Quán</strong>（復古越宅料理）</li>
-        <li><time>14:30</time>購物：<strong>Saigon Centre</strong> / <strong>Takashimaya</strong> / Vincom</li>
-        <li><time>17:00</time>按摩：<strong>Temple Leaf Spa</strong> or <strong>Anam QT Spa</strong>（結束旅程前放鬆）</li>
-        <li><time>20:00</time>夜宵：<strong>The Alley Cocktail & Kitchen</strong> 或 <strong>Layla - Eatery & Bar</strong></li>
+        <li><time>08:30</time>Tan Dinh Church + <strong>PhinDeli</strong> 咖啡</li>
+        <li><time>11:30</time>午餐：<strong>Cục Gạch Quán</strong></li>
+        <li><time>14:30</time>購物：Saigon Centre / Takashimaya</li>
+        <li><time>17:00</time>按摩：<strong>Temple Leaf Spa</strong> or <strong>Anam QT Spa</strong></li>
+        <li><time>20:00</time>夜宵：<strong>Layla</strong> / <strong>The Alley Cocktail</strong></li>
       </ul>
     </section>
 
     <section class="planner">
-      <h2>互動行程板 (可新增/編輯/儲存本機)</h2>
-      <p>新增或編輯行程會儲存在瀏覽器 localStorage（僅此裝置可見）。可用於討論、調整時段，再匯出 JSON 備份。</p>
+      <h2>互動行程板 (本機 + GitHub 同步)</h2>
+      <p>新增 / 編輯行程會寫入瀏覽器 localStorage。若輸入 GitHub Token 並點擊「儲存至 GitHub」，即可將最新行程與點讚同步到 <code>data/hcmc-plan.json</code>，供全員共同查看。</p>
       <form id="plan-form">
         <div>
           <label for="date">日期</label>
@@ -282,13 +192,13 @@
         </div>
         <div>
           <label for="title">主題</label>
-          <input type="text" id="title" placeholder="例如：Bonsai Cruise 晚餐" required />
+          <input type="text" id="title" placeholder="例如：Bonsai Cruise" required />
         </div>
         <div>
           <label for="location">地點 / 標籤</label>
           <input type="text" id="location" placeholder="District 1 · Grab" />
         </div>
-        <div style="grid-column: 1 / -1;">
+        <div style="grid-column:1/-1;">
           <label for="notes">備註</label>
           <textarea id="notes" placeholder="交通、預約資訊、同行夥伴需求"></textarea>
         </div>
@@ -297,6 +207,20 @@
         <button type="button" id="export-btn" style="background:#0ea5e9;">匯出 JSON</button>
       </form>
       <div class="board" id="board"></div>
+    </section>
+
+    <section class="cloud-panel">
+      <h2>GitHub 雲端設定</h2>
+      <form id="cloud-form">
+        <div>
+          <label for="gh-token">GitHub Token</label>
+          <input type="password" id="gh-token" placeholder="輸入有 repo 權限的 PAT (僅存本機)" />
+          <small>建議建立 Fine-grained token，僅授權 repo <code>AlbertLiu16888/todo-web</code>。</small>
+        </div>
+        <button type="button" id="refresh-btn" style="background:#0ea5e9;">重新載入 GitHub 版本</button>
+        <button type="button" id="cloud-save-btn">儲存至 GitHub</button>
+      </form>
+      <div id="sync-status"></div>
     </section>
   </div>
 
@@ -313,24 +237,57 @@
     const saveBtn = document.getElementById('save-btn');
     const resetBtn = document.getElementById('reset-btn');
     const exportBtn = document.getElementById('export-btn');
+    const tokenInput = document.getElementById('gh-token');
+    const refreshBtn = document.getElementById('refresh-btn');
+    const cloudSaveBtn = document.getElementById('cloud-save-btn');
+    const syncStatus = document.getElementById('sync-status');
 
-    const initialPlan = [
+    const likesDefault = { day1:0, day2:0, day3:0, day4:0, day5:0 };
+    let plan = [];
+    let likes = { ...likesDefault };
+    let editIndex = null;
+    let currentSha = null;
+
+    const localPlan = JSON.parse(localStorage.getItem('hcmcPlan') || 'null');
+    const localLikes = JSON.parse(localStorage.getItem('hcmcLikes') || 'null');
+    const storedToken = localStorage.getItem('hcmcGhToken');
+    if (storedToken) tokenInput.value = storedToken;
+
+    const defaultPlan = [
       { date: '2026-03-14', time: '21:30', title: 'Social Club Rooftop Bar', location: 'Hôtel des Arts · Rooftop', notes: 'Smart casual；日落後 DJ set' },
       { date: '2026-03-15', time: '19:00', title: 'Bonsai Legacy River Cruise', location: 'Saigon River Pier', notes: '預約含自助餐；18:30 前報到' },
       { date: '2026-03-16', time: '09:30', title: 'Landmark 81 SkyView', location: 'Binh Thanh District', notes: 'Grab ₫90k；購票含玻璃橋' },
-      { date: '2026-03-17', time: '16:00', title: 'Maison Marou Chocolate Class', location: '167-169 Calmette', notes: '事先於官網預約手作課程' },
+      { date: '2026-03-17', time: '16:00', title: 'Maison Marou Chocolate Class', location: '167-169 Calmette', notes: '提前於官網預約手作課程' },
       { date: '2026-03-18', time: '17:00', title: 'Temple Leaf Spa', location: '74/1 Hai Ba Trung', notes: '90 分鐘越式按摩 · Tipping ₫40k' }
     ];
 
-    let plan = JSON.parse(localStorage.getItem('hcmcPlan') || 'null') || initialPlan;
-    let editIndex = null;
+    async function loadFromGitHub(showStatus = false) {
+      try {
+        const url = `${window.location.pathname.replace(/\/[^/]*$/, '')}/data/hcmc-plan.json?ts=${Date.now()}`;
+        const res = await fetch(url);
+        if (!res.ok) throw new Error('讀取 GitHub 版本失敗');
+        const data = await res.json();
+        plan = data.plan || defaultPlan;
+        likes = data.likes || { ...likesDefault };
+        localStorage.setItem('hcmcPlan', JSON.stringify(plan));
+        localStorage.setItem('hcmcLikes', JSON.stringify(likes));
+        if (showStatus) syncStatus.textContent = '已載入 GitHub 最新版本 ( ' + (data.updated || '') + ' )';
+      } catch (err) {
+        console.warn(err);
+        plan = localPlan || defaultPlan;
+        likes = localLikes || { ...likesDefault };
+        if (showStatus) syncStatus.textContent = '無法連線 GitHub，改用本機資料';
+      }
+      render();
+      renderLikes();
+    }
 
     function render() {
       boardEl.innerHTML = '';
       plan
         .slice()
-        .sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time))
-        .forEach((item, index) => {
+        .sort((a,b) => (a.date + a.time).localeCompare(b.date + b.time))
+        .forEach((item,index) => {
           const box = document.createElement('div');
           box.className = 'board-item';
           box.innerHTML = `
@@ -344,11 +301,23 @@
             <div>
               <button type="button" onclick="editItem(${index})">編輯</button>
               <button type="button" class="delete" onclick="deleteItem(${index})">刪除</button>
-            </div>
-          `;
+            </div>`;
           boardEl.appendChild(box);
         });
       localStorage.setItem('hcmcPlan', JSON.stringify(plan));
+    }
+
+    function renderLikes() {
+      document.querySelectorAll('.day-card').forEach(card => {
+        const id = card.getAttribute('data-like-id');
+        const btn = card.querySelector('.like-btn');
+        const count = likes[id] || 0;
+        btn.querySelector('span').textContent = count;
+        const likedSet = JSON.parse(localStorage.getItem('likedDays') || '[]');
+        if (likedSet.includes(id)) btn.classList.add('liked');
+        else btn.classList.remove('liked');
+      });
+      localStorage.setItem('hcmcLikes', JSON.stringify(likes));
     }
 
     window.editItem = function(index) {
@@ -368,6 +337,57 @@
       saveBtn.textContent = '新增行程';
       render();
     };
+
+    function handleLikeButtons() {
+      document.querySelectorAll('.like-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const card = btn.closest('.day-card');
+          const id = card.getAttribute('data-like-id');
+          const likedSet = JSON.parse(localStorage.getItem('likedDays') || '[]');
+          if (likedSet.includes(id)) {
+            alert('已點過讚囉！');
+            return;
+          }
+          likes[id] = (likes[id] || 0) + 1;
+          likedSet.push(id);
+          localStorage.setItem('likedDays', JSON.stringify(likedSet));
+          renderLikes();
+        });
+      });
+    }
+
+    async function saveToGitHub() {
+      const token = tokenInput.value.trim();
+      if (!token) { alert('請輸入 GitHub Token'); return; }
+      syncStatus.textContent = '儲存中…';
+      localStorage.setItem('hcmcGhToken', token);
+      try {
+        const getRes = await fetch('https://api.github.com/repos/AlbertLiu16888/todo-web/contents/data/hcmc-plan.json');
+        const getJson = await getRes.json();
+        const sha = getJson.sha;
+        const payload = { updated: new Date().toISOString(), plan, likes };
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(payload, null, 2))));
+        const body = {
+          message: 'Update HCMC plan via planner',
+          content,
+          sha
+        };
+        const putRes = await fetch('https://api.github.com/repos/AlbertLiu16888/todo-web/contents/data/hcmc-plan.json', {
+          method: 'PUT',
+          headers: {
+            'Authorization': `token ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(body)
+        });
+        if (!putRes.ok) throw new Error('GitHub 儲存失敗');
+        syncStatus.textContent = '已儲存到 GitHub ✔';
+        await loadFromGitHub();
+      } catch (err) {
+        console.error(err);
+        syncStatus.textContent = '儲存失敗：' + err.message;
+      }
+    }
 
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -396,14 +416,19 @@
     });
 
     exportBtn.addEventListener('click', () => {
-      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(plan, null, 2));
+      const payload = { plan, likes };
+      const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(payload, null, 2));
       const dl = document.createElement('a');
       dl.setAttribute('href', dataStr);
-      dl.setAttribute('download', 'hcmc-plan.json');
+      dl.setAttribute('download', 'hcmc-plan-export.json');
       dl.click();
     });
 
-    render();
+    refreshBtn.addEventListener('click', () => loadFromGitHub(true));
+    cloudSaveBtn.addEventListener('click', saveToGitHub);
+
+    loadFromGitHub();
+    handleLikeButtons();
   </script>
 </body>
 </html>

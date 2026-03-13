@@ -1,0 +1,17 @@
+{
+  "updated": "2026-03-13T15:30:00.000Z",
+  "plan": [
+    {"date":"2026-03-14","time":"21:30","title":"Social Club Rooftop Bar","location":"Hôtel des Arts · Rooftop","notes":"Smart casual；日落後 DJ set"},
+    {"date":"2026-03-15","time":"19:00","title":"Bonsai Legacy River Cruise","location":"Saigon River Pier","notes":"預約含自助餐；18:30 前報到"},
+    {"date":"2026-03-16","time":"09:30","title":"Landmark 81 SkyView","location":"Binh Thanh District","notes":"Grab ₫90k；購票含玻璃橋"},
+    {"date":"2026-03-17","time":"16:00","title":"Maison Marou Chocolate Class","location":"167-169 Calmette","notes":"提前於官網預約手作課程"},
+    {"date":"2026-03-18","time":"17:00","title":"Temple Leaf Spa","location":"74/1 Hai Ba Trung","notes":"90 分鐘越式按摩 · Tipping ₫40k"}
+  ],
+  "likes": {
+    "day1": 0,
+    "day2": 0,
+    "day3": 0,
+    "day4": 0,
+    "day5": 0
+  }
+}
