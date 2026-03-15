@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>樂點創意胡志明市 - 戰利品比價與記帳系統</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-slate-950 text-slate-100">
+  <main class="mx-auto flex max-w-5xl flex-col gap-6 px-4 py-6">
+    <header class="text-center">
+      <p class="text-sm tracking-wide text-emerald-300">樂點創意胡志明市</p>
+      <h1 class="text-2xl font-bold">戰利品比價與記帳系統</h1>
+      <p class="text-xs text-slate-400">VND → TWD · 支援退稅計算 · 可匯入 Supabase (後續)</p>
+    </header>
+
+    <section class="rounded-2xl bg-slate-900/70 p-4 shadow-xl">
+      <form id="item-form" class="space-y-3">
+        <input type="hidden" id="editingId" />
+        <div class="grid gap-3 sm:grid-cols-2">
+          <label class="text-sm font-semibold">品名
+            <input id="item_name" required class="mt-1 w-full rounded-xl bg-slate-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+          </label>
+          <label class="text-sm font-semibold">VND 價格
+            <input id="vnd_price" type="number" min="0" step="0.01" required class="mt-1 w-full rounded-xl bg-slate-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+          </label>
+          <label class="text-sm font-semibold">匯率 (VND→TWD)
+            <input id="exchange_rate" type="number" min="0" step="0.0001" required class="mt-1 w-full rounded-xl bg-slate-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+          </label>
+          <label class="text-sm font-semibold">台灣參考價 (TWD)
+            <input id="tw_ref_price" type="number" min="0" step="0.01" class="mt-1 w-full rounded-xl bg-slate-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+          </label>
+          <label class="text-sm font-semibold sm:col-span-2">台灣參考連結
+            <input id="tw_ref_url" type="url" placeholder="https://" class="mt-1 w-full rounded-xl bg-slate-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400" />
+          </label>
+        </div>
+        <label class="flex items-center gap-2 text-sm font-semibold">
+          <input id="tax_refund" type="checkbox" class="h-4 w-4 rounded border-slate-500 bg-slate-800 text-emerald-400 focus:ring-emerald-400" />
+          可申請 8% 退稅
+        </label>
+        <div class="flex flex-col gap-2 sm:flex-row">
+          <button type="submit" class="flex-1 rounded-xl bg-emerald-500 py-2 text-sm font-semibold text-slate-900 shadow-lg shadow-emerald-500/30 hover:bg-emerald-400" id="submitBtn">新增項目</button>
+          <button type="button" id="cancelEdit" class="hidden rounded-xl border border-slate-700 px-4 py-2 text-sm text-slate-200">取消編輯</button>
+        </div>
+      </form>
+    </section>
+
+    <section class="rounded-2xl border border-slate-800 bg-slate-900/60 p-4 shadow-xl">
+      <div class="flex flex-wrap items-center justify-between gap-3">
+        <h2 class="text-lg font-semibold">戰利品清單</h2>
+        <button id="resetLedger" class="text-xs text-red-300 underline">清空所有資料</button>
+      </div>
+      <div class="mt-3 overflow-x-auto">
+        <table class="min-w-full text-left text-sm">
+          <thead class="border-b border-slate-800 text-xs uppercase text-slate-400">
+            <tr>
+              <th class="pb-2">品項</th>
+              <th class="pb-2">VND 價格</th>
+              <th class="pb-2">匯率</th>
+              <th class="pb-2">退稅</th>
+              <th class="pb-2">台灣價</th>
+              <th class="pb-2">實際成本</th>
+              <th class="pb-2">退稅後</th>
+              <th class="pb-2">節省</th>
+              <th class="pb-2">操作</th>
+            </tr>
+          </thead>
+          <tbody id="items-body" class="divide-y divide-slate-800"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = 'hochiminh-ledger-v1';
+    const defaultItems = [
+      {
+        id: crypto.randomUUID(),
+        item_name: '咖啡禮盒 (Trung Nguyen)',
+        vnd_price: 550000,
+        exchange_rate: 0.00132,
+        tax_refund_eligible: false,
+        tw_ref_price: 950,
+        tw_ref_url: 'https://www.momoshop.com.tw',
+      },
+      {
+        id: crypto.randomUUID(),
+        item_name: 'Ong Bau 智能行李箱',
+        vnd_price: 2400000,
+        exchange_rate: 0.00132,
+        tax_refund_eligible: true,
+        tw_ref_price: 5890,
+        tw_ref_url: '',
+      },
+    ];
+
+    function loadState() {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultItems));
+        return defaultItems;
+      }
+      try {
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : defaultItems;
+      } catch (err) {
+        console.error(err);
+        return defaultItems;
+      }
+    }
+
+    let items = loadState();
+    const tbody = document.getElementById('items-body');
+    const form = document.getElementById('item-form');
+    const cancelBtn = document.getElementById('cancelEdit');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function formatCurrency(value) {
+      return new Intl.NumberFormat('zh-TW', { style: 'currency', currency: 'TWD' }).format(value);
+    }
+
+    function persist() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
+    }
+
+    function compute(item) {
+      const actual = item.vnd_price * item.exchange_rate;
+      const finalCost = item.tax_refund_eligible ? actual * 0.92 : actual;
+      const savings = item.tw_ref_price ? item.tw_ref_price - finalCost : null;
+      return { actual, finalCost, savings };
+    }
+
+    function render() {
+      tbody.innerHTML = '';
+      if (items.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="9" class="py-6 text-center text-slate-500">尚無紀錄</td></tr>';
+        return;
+      }
+      items.forEach((item) => {
+        const { actual, finalCost, savings } = compute(item);
+        const tr = document.createElement('tr');
+        tr.className = 'align-top';
+        tr.innerHTML = `
+          <td class="py-3 text-sm font-semibold text-slate-100">${item.item_name}<br><a href="${item.tw_ref_url || '#'}" target="_blank" class="text-xs text-emerald-300 underline">${item.tw_ref_url ? '參考連結' : ''}</a></td>
+          <td class="py-3 text-sm">${item.vnd_price.toLocaleString()}₫</td>
+          <td class="py-3 text-sm">${item.exchange_rate}</td>
+          <td class="py-3 text-center text-sm">${item.tax_refund_eligible ? '✓' : ''}</td>
+          <td class="py-3 text-sm">${item.tw_ref_price ? formatCurrency(item.tw_ref_price) : '—'}</td>
+          <td class="py-3 text-sm">${formatCurrency(actual)}</td>
+          <td class="py-3 text-sm">${formatCurrency(finalCost)}</td>
+          <td class="py-3 text-sm ${savings !== null && savings > 0 ? 'text-emerald-400' : 'text-slate-200'}">${savings !== null ? formatCurrency(savings) : '—'}</td>
+          <td class="py-3 space-x-1 text-sm">
+            <button data-action="edit" data-id="${item.id}" class="rounded border border-slate-600 px-3 py-1">編輯</button>
+            <button data-action="delete" data-id="${item.id}" class="rounded border border-red-500/70 px-3 py-1 text-red-300">刪除</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    tbody.addEventListener('click', (evt) => {
+      const target = evt.target.closest('button');
+      if (!target) return;
+      const id = target.dataset.id;
+      const action = target.dataset.action;
+      if (action === 'delete') {
+        items = items.filter((item) => item.id !== id);
+        persist();
+        render();
+      }
+      if (action === 'edit') {
+        const record = items.find((item) => item.id === id);
+        if (!record) return;
+        document.getElementById('editingId').value = record.id;
+        document.getElementById('item_name').value = record.item_name;
+        document.getElementById('vnd_price').value = record.vnd_price;
+        document.getElementById('exchange_rate').value = record.exchange_rate;
+        document.getElementById('tw_ref_price').value = record.tw_ref_price || '';
+        document.getElementById('tw_ref_url').value = record.tw_ref_url || '';
+        document.getElementById('tax_refund').checked = record.tax_refund_eligible;
+        submitBtn.textContent = '更新項目';
+        cancelBtn.classList.remove('hidden');
+      }
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      form.reset();
+      document.getElementById('editingId').value = '';
+      submitBtn.textContent = '新增項目';
+      cancelBtn.classList.add('hidden');
+      document.getElementById('exchange_rate').value = 0.00132;
+    });
+
+    form.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+      const payload = {
+        id: document.getElementById('editingId').value || crypto.randomUUID(),
+        item_name: document.getElementById('item_name').value.trim(),
+        vnd_price: Number(document.getElementById('vnd_price').value) || 0,
+        exchange_rate: Number(document.getElementById('exchange_rate').value) || 0,
+        tax_refund_eligible: document.getElementById('tax_refund').checked,
+        tw_ref_price: document.getElementById('tw_ref_price').value ? Number(document.getElementById('tw_ref_price').value) : null,
+        tw_ref_url: document.getElementById('tw_ref_url').value.trim(),
+      };
+      if (!payload.item_name || payload.vnd_price <= 0 || payload.exchange_rate <= 0) {
+        alert('請確認品名、VND 價格與匯率');
+        return;
+      }
+      const editingId = document.getElementById('editingId').value;
+      if (editingId) {
+        items = items.map((item) => (item.id === editingId ? payload : item));
+      } else {
+        items = [payload, ...items];
+      }
+      persist();
+      render();
+      form.reset();
+      document.getElementById('editingId').value = '';
+      document.getElementById('exchange_rate').value = 0.00132;
+      submitBtn.textContent = '新增項目';
+      cancelBtn.classList.add('hidden');
+    });
+
+    document.getElementById('resetLedger').addEventListener('click', () => {
+      if (confirm('確定要清空所有資料嗎？')) {
+        items = [];
+        persist();
+        render();
+      }
+    });
+
+    document.getElementById('exchange_rate').value = 0.00132;
+    render();
+  </script>
+</body>
+</html>
