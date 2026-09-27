@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 遊戲合集</title>
+<style>
+  :root { --bg:#0f172a; --card:#1e293b; --line:#334155; --text:#e2e8f0; --muted:#94a3b8; --accent:#8b5cf6; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"PingFang TC","Segoe UI",sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
+  header { padding:40px 16px 24px; text-align:center; }
+  h1 { margin:0 0 8px; font-size:2rem; }
+  header p { margin:0; color:var(--muted); }
+  .grid { max-width:960px; margin:0 auto; padding:16px; display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:16px; }
+  a.card { display:block; background:var(--card); border:1px solid var(--line); border-radius:14px; padding:20px; color:inherit; text-decoration:none; transition:transform .15s, border-color .15s; }
+  a.card:hover { transform:translateY(-3px); border-color:var(--accent); }
+  .icon { font-size:2.2rem; }
+  .card h2 { margin:10px 0 6px; font-size:1.2rem; }
+  .card p { margin:0 0 10px; color:var(--muted); font-size:.92rem; line-height:1.5; }
+  .keys { font-size:.8rem; color:#c4b5fd; }
+  footer { text-align:center; color:var(--muted); font-size:.85rem; padding:24px 16px 40px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🎮 AI 遊戲合集</h1>
+  <p>純 HTML/JavaScript，無需安裝，Mac 上用 Safari / Chrome 直接開啟即可遊玩</p>
+</header>
+<main class="grid">
+  <a class="card" href="snake.html"><div class="icon">🐍</div><h2>貪食蛇 Snake</h2><p>吃食物變長，別撞到牆或自己。速度會逐漸加快。</p><div class="keys">方向鍵 / WASD · 空白鍵暫停</div></a>
+  <a class="card" href="tetris.html"><div class="icon">🧱</div><h2>俄羅斯方塊 Tetris</h2><p>經典方塊消除，含下一塊預覽、Hard Drop、等級加速。</p><div class="keys">←→ 移動 · ↑ 旋轉 · ↓ 軟降 · 空白 硬降 · P 暫停</div></a>
+  <a class="card" href="breakout.html"><div class="icon">🧨</div><h2>打磚塊 Breakout</h2><p>用擋板反彈球，擊碎所有磚塊，共三條命。</p><div class="keys">←→ 或滑鼠移動 · 空白鍵發球</div></a>
+  <a class="card" href="space-shooter.html"><div class="icon">🚀</div><h2>太空射擊 Space Shooter</h2><p>駕駛戰機擊落敵機，敵人會越來越多，撿道具強化火力。</p><div class="keys">方向鍵 / WASD 移動 · 空白鍵射擊</div></a>
+  <a class="card" href="flappy.html"><div class="icon">🐤</div><h2>飛翔小鳥 Flappy</h2><p>點擊讓小鳥拍翅，穿過水管縫隙，挑戰最高分。</p><div class="keys">空白鍵 / 點擊畫面</div></a>
+  <a class="card" href="2048.html"><div class="icon">🔢</div><h2>2048</h2><p>滑動合併相同數字，湊出 2048！支援觸控滑動。</p><div class="keys">方向鍵 / WASD / 觸控滑動</div></a>
+</main>
+<footer>最高分會儲存在本機瀏覽器中 · 按 Esc 或瀏覽器返回鍵回到此頁</footer>
+</body>
+</html>

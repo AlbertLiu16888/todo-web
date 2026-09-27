@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>俄羅斯方塊</title>
+<style>
+  body { margin:0; background:#0f172a; color:#e2e8f0; font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif; display:flex; flex-direction:column; align-items:center; min-height:100vh; }
+  .bar { padding:16px; display:flex; gap:24px; }
+  .bar a { color:#94a3b8; text-decoration:none; }
+  .wrap { display:flex; gap:20px; align-items:flex-start; }
+  canvas { background:#111827; border:2px solid #334155; border-radius:8px; }
+  #board { height:min(600px, calc(100vh - 140px)); }
+  .side { display:flex; flex-direction:column; gap:14px; min-width:120px; }
+  .box { background:#1e293b; border:1px solid #334155; border-radius:8px; padding:10px; }
+  .box small { color:#94a3b8; display:block; }
+  .box b { font-size:1.3rem; }
+  .hint { color:#94a3b8; font-size:.8rem; line-height:1.7; }
+</style>
+</head>
+<body>
+<div class="bar"><a href="index.html">← 返回</a><b>🧱 俄羅斯方塊</b></div>
+<div class="wrap">
+  <canvas id="board" width="300" height="600"></canvas>
+  <div class="side">
+    <div class="box"><small>下一塊</small><canvas id="next" width="100" height="80" style="border:none;background:none"></canvas></div>
+    <div class="box"><small>分數</small><b id="score">0</b></div>
+    <div class="box"><small>行數</small><b id="lines">0</b></div>
+    <div class="box"><small>等級</small><b id="level">1</b></div>
+    <div class="box"><small>最高分</small><b id="best">0</b></div>
+    <div class="hint">← → 移動<br>↑ / X 旋轉<br>↓ 軟降<br>空白 硬降<br>P 暫停<br>Enter 開始</div>
+  </div>
+</div>
+<script>
+const W = 10, H = 20, S = 30;
+const cv = document.getElementById('board'), ctx = cv.getContext('2d');
+const nx = document.getElementById('next').getContext('2d');
+const store = { get(k){ try { return +localStorage.getItem(k) || 0; } catch { return 0; } }, set(k,v){ try { localStorage.setItem(k,v); } catch {} } };
+const COLORS = { I:'#22d3ee', O:'#facc15', T:'#a855f7', S:'#22c55e', Z:'#ef4444', J:'#3b82f6', L:'#f97316' };
+const SHAPES = {
+  I:[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]], O:[[1,1],[1,1]],
+  T:[[0,1,0],[1,1,1],[0,0,0]], S:[[0,1,1],[1,1,0],[0,0,0]], Z:[[1,1,0],[0,1,1],[0,0,0]],
+  J:[[1,0,0],[1,1,1],[0,0,0]], L:[[0,0,1],[1,1,1],[0,0,0]]
+};
+let grid, cur, next, bag = [], score, lines, level, best = store.get('tetris-best'), state = 'ready', dropAcc = 0, lastT = 0;
+document.getElementById('best').textContent = best;
+
+function fromBag() {
+  if (!bag.length) { bag = Object.keys(SHAPES); for (let i = bag.length - 1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [bag[i],bag[j]] = [bag[j],bag[i]]; } }
+  const t = bag.pop(); return { t, m: SHAPES[t].map(r => r.slice()), x: 0, y: 0 };
+}
+function spawn() {
+  cur = next || fromBag(); next = fromBag();
+  cur.x = Math.floor((W - cur.m[0].length) / 2); cur.y = cur.t === 'I' ? -1 : 0;
+  if (collide(cur.m, cur.x, cur.y)) state = 'over';
+}
+function reset() { grid = Array.from({length:H}, () => Array(W).fill(null)); score = 0; lines = 0; level = 1; next = null; spawn(); hud(); }
+function collide(m, ox, oy) {
+  for (let y = 0; y < m.length; y++) for (let x = 0; x < m[y].length; x++) {
+    if (!m[y][x]) continue;
+    const gx = x + ox, gy = y + oy;
+    if (gx < 0 || gx >= W || gy >= H) return true;
+    if (gy >= 0 && grid[gy][gx]) return true;
+  }
+  return false;
+}
+function rotate(m) { return m[0].map((_, i) => m.map(r => r[i]).reverse()); }
+function tryRotate() {
+  const r = rotate(cur.m);
+  for (const k of [0, -1, 1, -2, 2]) if (!collide(r, cur.x + k, cur.y)) { cur.m = r; cur.x += k; return; }
+}
+function lock() {
+  cur.m.forEach((r, y) => r.forEach((v, x) => { if (v && cur.y + y >= 0) grid[cur.y + y][cur.x + x] = cur.t; }));
+  let cleared = 0;
+  for (let y = H - 1; y >= 0; y--) if (grid[y].every(Boolean)) { grid.splice(y, 1); grid.unshift(Array(W).fill(null)); cleared++; y++; }
+  if (cleared) { score += [0,100,300,500,800][cleared] * level; lines += cleared; level = 1 + Math.floor(lines / 10); }
+  spawn(); hud();
+}
+function drop() { if (!collide(cur.m, cur.x, cur.y + 1)) cur.y++; else lock(); }
+function hardDrop() { let n = 0; while (!collide(cur.m, cur.x, cur.y + 1)) { cur.y++; n++; } score += n * 2; lock(); }
+function hud() {
+  document.getElementById('score').textContent = score;
+  document.getElementById('lines').textContent = lines;
+  document.getElementById('level').textContent = level;
+  if (score > best) { best = score; store.set('tetris-best', best); document.getElementById('best').textContent = best; }
+}
+function cell(c, x, y, color, size, alpha = 1) {
+  c.globalAlpha = alpha; c.fillStyle = color; c.fillRect(x*size+1, y*size+1, size-2, size-2);
+  c.fillStyle = 'rgba(255,255,255,0.25)'; c.fillRect(x*size+1, y*size+1, size-2, 4); c.globalAlpha = 1;
+}
+function draw() {
+  ctx.fillStyle = '#111827'; ctx.fillRect(0, 0, cv.width, cv.height);
+  ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+  for (let x = 0; x <= W; x++) { ctx.beginPath(); ctx.moveTo(x*S, 0); ctx.lineTo(x*S, H*S); ctx.stroke(); }
+  for (let y = 0; y <= H; y++) { ctx.beginPath(); ctx.moveTo(0, y*S); ctx.lineTo(W*S, y*S); ctx.stroke(); }
+  grid.forEach((r, y) => r.forEach((t, x) => t && cell(ctx, x, y, COLORS[t], S)));
+  if (state !== 'over') {
+    let gy = cur.y; while (!collide(cur.m, cur.x, gy + 1)) gy++;
+    cur.m.forEach((r, y) => r.forEach((v, x) => { if (v && gy + y >= 0) cell(ctx, cur.x + x, gy + y, COLORS[cur.t], S, 0.2); }));
+    cur.m.forEach((r, y) => r.forEach((v, x) => { if (v && cur.y + y >= 0) cell(ctx, cur.x + x, cur.y + y, COLORS[cur.t], S); }));
+  }
+  nx.clearRect(0, 0, 100, 80);
+  const m = next.m, off = (4 - m[0].length) / 2;
+  m.forEach((r, y) => r.forEach((v, x) => v && cell(nx, x + off + 0.5, y + 0.3, COLORS[next.t], 20)));
+  if (state !== 'play') {
+    ctx.fillStyle = 'rgba(0,0,0,0.65)'; ctx.fillRect(0, 0, cv.width, cv.height);
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = 'bold 28px sans-serif';
+    ctx.fillText({ready:'俄羅斯方塊', pause:'暫停', over:'遊戲結束'}[state], cv.width/2, cv.height/2 - 10);
+    ctx.font = '15px sans-serif'; ctx.fillText(state === 'pause' ? '按 P 繼續' : '按 Enter 開始', cv.width/2, cv.height/2 + 22);
+  }
+}
+function loop(t) {
+  const dt = t - lastT; lastT = t;
+  if (state === 'play') { dropAcc += dt; const speed = Math.max(80, 800 - (level - 1) * 70); if (dropAcc > speed) { dropAcc = 0; drop(); } }
+  draw(); requestAnimationFrame(loop);
+}
+addEventListener('keydown', e => {
+  if (e.code === 'Escape') { location.href = 'index.html'; return; }
+  if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Space'].includes(e.code)) e.preventDefault();
+  if (e.code === 'Enter' && state !== 'play' && state !== 'pause') { reset(); state = 'play'; return; }
+  if (e.code === 'KeyP' && (state === 'play' || state === 'pause')) { state = state === 'play' ? 'pause' : 'play'; return; }
+  if (state !== 'play') return;
+  if (e.code === 'ArrowLeft' && !collide(cur.m, cur.x - 1, cur.y)) cur.x--;
+  if (e.code === 'ArrowRight' && !collide(cur.m, cur.x + 1, cur.y)) cur.x++;
+  if (e.code === 'ArrowDown') { drop(); score++; hud(); dropAcc = 0; }
+  if (e.code === 'ArrowUp' || e.code === 'KeyX') tryRotate();
+  if (e.code === 'Space') hardDrop();
+});
+reset(); requestAnimationFrame(loop);
+</script>
+</body>
+</html>

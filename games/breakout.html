@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>打磚塊</title>
+<style>
+  body { margin:0; background:#0f172a; color:#e2e8f0; font-family:-apple-system,BlinkMacSystemFont,"PingFang TC",sans-serif; display:flex; flex-direction:column; align-items:center; min-height:100vh; }
+  .bar { display:flex; gap:24px; padding:16px; }
+  .bar a { color:#94a3b8; text-decoration:none; }
+  canvas { background:#111827; border:2px solid #334155; border-radius:8px; max-width:calc(100vw - 32px); cursor:none; }
+  .hint { color:#94a3b8; font-size:.9rem; padding:12px; }
+</style>
+</head>
+<body>
+<div class="bar"><a href="index.html">← 返回</a><b>🧨 打磚塊</b><span>分數 <b id="score">0</b></span><span>生命 <b id="lives">3</b></span><span>關卡 <b id="lvl">1</b></span><span>最高 <b id="best">0</b></span></div>
+<canvas id="c" width="640" height="480"></canvas>
+<div class="hint">← → 或移動滑鼠控制擋板 · 空白鍵 / 點擊 發球</div>
+<script>
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const store = { get(k){ try { return +localStorage.getItem(k) || 0; } catch { return 0; } }, set(k,v){ try { localStorage.setItem(k,v); } catch {} } };
+const ROWS = 6, COLS = 10, BW = 58, BH = 20, GAP = 4, TOP = 50;
+const ROW_COLORS = ['#ef4444','#f97316','#facc15','#22c55e','#3b82f6','#a855f7'];
+let paddle, ball, bricks, score = 0, lives = 3, level = 1, stuck = true, best = store.get('breakout-best'), over = false, keys = {};
+document.getElementById('best').textContent = best;
+
+function buildLevel() {
+  bricks = [];
+  const offX = (cv.width - (COLS * (BW + GAP) - GAP)) / 2;
+  for (let r = 0; r < ROWS; r++) for (let c = 0; c < COLS; c++)
+    bricks.push({ x: offX + c * (BW + GAP), y: TOP + r * (BH + GAP), hp: r < level - 1 ? 2 : 1, color: ROW_COLORS[r], pts: (ROWS - r) * 10 });
+}
+function resetBall() { stuck = true; ball = { x: paddle.x + paddle.w / 2, y: paddle.y - 8, r: 7, vx: 0, vy: 0 }; }
+function newGame() { paddle = { x: cv.width / 2 - 50, y: cv.height - 30, w: 100, h: 12 }; score = 0; lives = 3; level = 1; over = false; buildLevel(); resetBall(); hud(); }
+function launch() {
+  if (over) { newGame(); return; }
+  if (!stuck) return;
+  const speed = 5 + level * 0.6, a = (-Math.PI / 2) + (Math.random() - 0.5) * 0.8;
+  ball.vx = Math.cos(a) * speed; ball.vy = Math.sin(a) * speed; stuck = false;
+}
+function hud() {
+  document.getElementById('score').textContent = score; document.getElementById('lives').textContent = lives; document.getElementById('lvl').textContent = level;
+  if (score > best) { best = score; store.set('breakout-best', best); document.getElementById('best').textContent = best; }
+}
+function update() {
+  if (keys.ArrowLeft) paddle.x -= 8; if (keys.ArrowRight) paddle.x += 8;
+  paddle.x = Math.max(0, Math.min(cv.width - paddle.w, paddle.x));
+  if (stuck) { ball.x = paddle.x + paddle.w / 2; ball.y = paddle.y - ball.r - 1; return; }
+  // Sub-step to avoid tunnelling through bricks at high speed
+  const steps = 3;
+  for (let s = 0; s < steps; s++) {
+    ball.x += ball.vx / steps; ball.y += ball.vy / steps;
+    if (ball.x < ball.r) { ball.x = ball.r; ball.vx *= -1; }
+    if (ball.x > cv.width - ball.r) { ball.x = cv.width - ball.r; ball.vx *= -1; }
+    if (ball.y < ball.r) { ball.y = ball.r; ball.vy *= -1; }
+    if (ball.vy > 0 && ball.y + ball.r >= paddle.y && ball.y + ball.r <= paddle.y + paddle.h + 6 && ball.x >= paddle.x - ball.r && ball.x <= paddle.x + paddle.w + ball.r) {
+      const hit = (ball.x - (paddle.x + paddle.w / 2)) / (paddle.w / 2), sp = Math.hypot(ball.vx, ball.vy), a = hit * (Math.PI / 3);
+      ball.vx = sp * Math.sin(a); ball.vy = -Math.abs(sp * Math.cos(a)); ball.y = paddle.y - ball.r;
+    }
+    for (const b of bricks) {
+      if (b.hp <= 0) continue;
+      const cx = Math.max(b.x, Math.min(ball.x, b.x + BW)), cy = Math.max(b.y, Math.min(ball.y, b.y + BH));
+      const dx = ball.x - cx, dy = ball.y - cy;
+      if (dx * dx + dy * dy <= ball.r * ball.r) {
+        if (Math.abs(dx) > Math.abs(dy)) ball.vx *= -1; else ball.vy *= -1;
+        if (--b.hp === 0) { score += b.pts; hud(); }
+        break;
+      }
+    }
+  }
+  if (ball.y > cv.height + 20) {
+    lives--; hud();
+    if (lives <= 0) { over = true; stuck = true; } else resetBall();
+  }
+  if (bricks.every(b => b.hp <= 0)) { level++; buildLevel(); resetBall(); hud(); }
+}
+function draw() {
+  ctx.fillStyle = '#111827'; ctx.fillRect(0, 0, cv.width, cv.height);
+  for (const b of bricks) if (b.hp > 0) {
+    ctx.fillStyle = b.color; ctx.globalAlpha = b.hp > 1 ? 1 : 0.85; ctx.fillRect(b.x, b.y, BW, BH);
+    if (b.hp > 1) { ctx.strokeStyle = '#fff'; ctx.lineWidth = 2; ctx.strokeRect(b.x + 1, b.y + 1, BW - 2, BH - 2); }
+    ctx.globalAlpha = 1;
+  }
+  ctx.fillStyle = '#e2e8f0'; ctx.beginPath(); ctx.roundRect(paddle.x, paddle.y, paddle.w, paddle.h, 6); ctx.fill();
+  ctx.fillStyle = '#fbbf24'; ctx.beginPath(); ctx.arc(ball.x, ball.y, ball.r, 0, Math.PI * 2); ctx.fill();
+  if (stuck) {
+    ctx.fillStyle = '#fff'; ctx.textAlign = 'center'; ctx.font = over ? 'bold 30px sans-serif' : '16px sans-serif';
+    ctx.fillText(over ? '遊戲結束' : '按空白鍵或點擊發球', cv.width / 2, cv.height / 2 + 40);
+    if (over) { ctx.font = '16px sans-serif'; ctx.fillText('按空白鍵重新開始', cv.width / 2, cv.height / 2 + 72); }
+  }
+}
+function loop() { update(); draw(); requestAnimationFrame(loop); }
+addEventListener('keydown', e => {
+  if (e.code === 'Escape') { location.href = 'index.html'; return; }
+  if (['ArrowLeft','ArrowRight','Space'].includes(e.code)) e.preventDefault();
+  keys[e.code] = true; if (e.code === 'Space') launch();
+});
+addEventListener('keyup', e => { keys[e.code] = false; });
+function pointerX(clientX) { const r = cv.getBoundingClientRect(); paddle.x = (clientX - r.left) * (cv.width / r.width) - paddle.w / 2; }
+cv.addEventListener('mousemove', e => pointerX(e.clientX));
+cv.addEventListener('click', launch);
+cv.addEventListener('touchmove', e => { pointerX(e.touches[0].clientX); e.preventDefault(); }, {passive:false});
+cv.addEventListener('touchstart', e => { pointerX(e.touches[0].clientX); launch(); e.preventDefault(); }, {passive:false});
+newGame(); loop();
+</script>
+</body>
+</html>
